@@ -11,6 +11,7 @@
 .project
 .pub/
 .scripts-bin/
+.metals/
 build/
 **/packages/
 
@@ -56,6 +57,8 @@ pubspec.lock
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
+
+.vscode/
 
 ## File-based project format:
 *.iws

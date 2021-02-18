@@ -2,7 +2,7 @@ name: angel
 description: An app that's going to be amazing pretty soon.
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
-  sdk: '>=2.0.0-dev <3.0.0'
+  sdk: '>=2.10.0 <2.12.0'
 homepage: https://github.com/angel-dart/angel
 dependencies:
   angel_auth: ^2.0.0 # Supports stateless authentication via JWT
@@ -18,3 +18,26 @@ dev_dependencies:
   io: ^0.3.2 # For pretty printing.
   pedantic: ^1.0.0 # Enforces Dart style conventions.
   test: ^1.0.0 # For unit testing.
+dependency_overrides:
+  angel_auth:
+    path: ../angel/packages/auth
+  angel_configuration:
+    path: ../angel/packages/configuration
+  angel_framework:
+    path: ../angel/packages/framework
+  angel_jael:
+    path: ../angel/packages/jael/angel_jael
+  angel_production:
+    path: ../angel/packages/production
+  angel_static:
+    path: ../angel/packages/static
+  angel_validate:
+    path: ../angel/packages/validate
+  angel_hot:
+    path: ../angel/packages/hot
+  angel_test:
+    path: ../angel/packages/test
+
+
+
+
