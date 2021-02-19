@@ -8,7 +8,7 @@ part of 'greeting.dart';
 
 class GreetingMigration extends Migration {
   @override
-  up(Schema schema) {
+  void up(Schema schema) {
     schema.create('greetings', (table) {
       table.serial('id')..primaryKey();
       table.varChar('message');
@@ -18,7 +18,7 @@ class GreetingMigration extends Migration {
   }
 
   @override
-  down(Schema schema) {
+  void down(Schema schema) {
     schema.drop('greetings');
   }
 }

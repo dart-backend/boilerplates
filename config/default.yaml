@@ -1,9 +1,9 @@
 # Default server configuration.
 jwt_secret: INSECURE_DEFAULT_SECRET
 host: 127.0.0.1
-mongo_db: mongodb://localhost:27017/angel
+# mongo_db: mongodb://localhost:27017/angel
 port: 3000
 postgres:
-  # database_name: angel
-  username: postgres
-  password: postgres
+  database_name: angel
+  username: angel
+  password: angel2020

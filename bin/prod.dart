@@ -25,6 +25,6 @@ import 'package:angel_production/angel_production.dart';
 // so in the meantime, visit the Angel chat for further questions:
 //
 // https://gitter.im/angel_dart/discussion
-main(List<String> args) =>
+void main(List<String> args) =>
     Runner('{{angel}}', configureServer, reflector: MirrorsReflector())
         .run(args);
