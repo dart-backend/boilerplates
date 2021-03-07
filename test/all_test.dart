@@ -19,7 +19,7 @@ import 'package:test/test.dart';
 // here:
 // https://github.com/dart-lang/test
 
-main() async {
+void main() async {
   TestClient client;
 
   setUp(() async {
