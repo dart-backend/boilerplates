@@ -51,7 +51,7 @@ dev_dependencies:
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x
       path: packages/test
-  io: ^1.0.0 # For pretty printing.
+  io: ^0.3.5 # For pretty printing.
   pedantic: ^1.11.0 # Enforces Dart style conventions.
   test: ^1.16.5 # For unit testing.
 
