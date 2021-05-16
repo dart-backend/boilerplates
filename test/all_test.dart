@@ -1,7 +1,7 @@
-import 'package:angel/angel.dart';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_test/angel_test.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_test/angel3_test.dart';
 import 'package:test/test.dart';
+import 'package:myapp/myapp.dart';
 
 // Angel also includes facilities to make testing easier.
 //
@@ -19,7 +19,7 @@ import 'package:test/test.dart';
 // here:
 // https://github.com/dart-lang/test
 
-main() async {
+void main() async {
   late TestClient client;
 
   setUp(() async {

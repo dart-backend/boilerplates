@@ -1,8 +1,8 @@
 /// Custom plugins go here.
-library angel.src.config.plugins;
+library myapp.src.config.plugins;
 
 import 'dart:async';
-import 'package:angel_framework/angel_framework.dart';
+import 'package:angel3_framework/angel3_framework.dart';
 
 Future configureServer(Angel app) async {
   // Include any plugins you have made here.

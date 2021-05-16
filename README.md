@@ -1,9 +1,21 @@
+
+[![Angel 3 Framework](./logo3.png)]
+
+<!--- (https://angel-dart.dev) -->
+[![version](https://img.shields.io/badge/pub-v4.0.0-brightgreen)](https://pub.dartlang.org/packages/framework)
+[![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/angel_dart/discussion)
+
+[![License](https://img.shields.io/github/license/dukefirehawk/angel)](https://github.com/dukefirehawk/angel/LICENSE)
+
+<!---
 [![The Angel Framework](https://angel-dart.github.io/assets/images/logo.png)](https://angel-dart.dev)
 
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/angel_dart/discussion)
 [![Pub](https://img.shields.io/pub/v/angel_framework.svg)](https://pub.dartlang.org/packages/angel_framework)
 [![Build status](https://travis-ci.org/angel-dart/framework.svg?branch=master)](https://travis-ci.org/angel-dart/framework)
 ![License](https://img.shields.io/github/license/angel-dart/framework.svg)
+-->
 
 **A polished, production-ready backend framework in Dart.**
 
@@ -11,39 +23,20 @@
 
 -----
 ## About
-Angel is a full-stack Web framework in Dart. It aims to
+Angel3 is a full-stack Web framework in Dart. It aims to
 streamline development by providing many common features
 out-of-the-box in a consistent manner.
 
-With features like the following, Angel is the all-in-one framework you should choose to build your next project:
-* [GraphQL Support](https://github.com/angel-dart/graphql)
-* [PostgreSQL ORM](https://github.com/angel-dart/orm)
-* [Dependency Injection](https://docs.angel-dart.dev/guides/dependency-injection)
-* And [much more](https://github.com/angel-dart)...
-
 ## Installation & Setup
 
-Once you have [Dart](https://www.dartlang.org/) installed, bootstrapping a project is as simple as running a few shell commands:
-
-Install the [Angel CLI](https://github.com/angel-dart/cli):
-
-```bash
-pub global activate angel_cli
-```
-
-Bootstrap a project:
-
-```bash
-angel init hello
-```
-
-You can even have your server run and be *hot-reloaded* on file changes:
+1. Download and install [Dart](https://www.dartlang.org/).
+2. Run the following command to start Angel3 server in dev mode to *hot-reloaded* on file changes:
 
 ```bash
 dart --observe bin/dev.dart
 ```
 
-Next, check out the [detailed documentation](https://docs.angel-dart.dev/v/2.x) to learn to flesh out your project.
+3. Next, check out the [detailed documentation](https://docs.angel-dart.dev/v/2.x) to learn to flesh out your project. Angel3 works the same way as the original Angel. 
 
 ## Examples and Documentation
 Visit the [documentation](https://docs.angel-dart.dev/v/2.x)

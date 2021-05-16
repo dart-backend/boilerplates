@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:angel/src/pretty_logging.dart';
-import 'package:angel/angel.dart';
-import 'package:angel_container/mirrors.dart';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_hot/angel_hot.dart';
 import 'package:logging/logging.dart';
+import 'package:angel3_pretty_logging/angel3_pretty_logging.dart';
+import 'package:angel3_container/mirrors.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_hot/angel3_hot.dart';
+import 'package:myapp/myapp.dart';
 
 void main() async {
   // Watch the config/ and web/ directories for changes, and hot-reload the server.
