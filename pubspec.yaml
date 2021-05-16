@@ -2,94 +2,95 @@ name: angel
 description: An app that's going to be amazing pretty soon.
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
 environment:
-  sdk: '>=2.10.0 <3.0.0'
-homepage: https://github.com/angel-dart/angel
+  sdk: '>=2.12.0 <3.0.0'
+homepage: https://github.com/dukefirehawk/angel
 dependencies:
   angel_auth:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/auth
   angel_configuration:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/configuration
   angel_framework:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/framework
   angel_jael:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/jael/angel_jael
   angel_migration: 
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/orm/angel_migration
   angel_orm: 
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/orm/angel_orm
   angel_orm_postgres: 
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/orm/angel_orm_postgres
   angel_serialize:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/serialize/angel_serialize
   angel_production:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/production
   angel_static:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/static
   angel_validate:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/validate
+  optional: ^6.0.0-nullsafety.2
 dev_dependencies:
   angel_hot:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/hot
   angel_migration_runner:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/orm/angel_migration_runner
   angel_orm_generator:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/orm/angel_orm_generator
   angel_serialize_generator:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/serialize/angel_serialize_generator
   angel_test:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/test
-  build_runner: ^1.11.5 # Runs builds
-  io: ^0.3.0 # For pretty printing.
-  pedantic: ^1.0.0 # Enforces Dart style conventions.
-  test: ^1.0.0 # For unit testing.
+  build_runner: ^2.0.3 # Runs builds
+  io: ^1.0.0 # For pretty printing.
+  pedantic: ^1.11.0 # Enforces Dart style conventions.
+  test: ^1.17.4 # For unit testing.
 
 
 

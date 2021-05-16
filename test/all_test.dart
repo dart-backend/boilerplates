@@ -20,7 +20,7 @@ import 'package:test/test.dart';
 // https://github.com/dart-lang/test
 
 void main() async {
-  TestClient client;
+  late TestClient client;
 
   setUp(() async {
     var app = Angel();
@@ -35,7 +35,7 @@ void main() async {
 
   test('index returns 200', () async {
     // Request a resource at the given path.
-    var response = await client.get('/');
+    var response = await client.get(Uri.parse('/'));
 
     // Expect a 200 response.
     expect(response, hasStatus(200));
