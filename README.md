@@ -52,7 +52,7 @@ for dozens of guides and resources, including video tutorials,
 to get up and running as quickly as possible with Angel.
 
 Examples and complete projects can be found
-[here](https://github.com/dukefirehawk/angel3-examples/tree/master/docs_examples/getting_started).
+[here](https://github.com/dukefirehawk/angel3-examples).
 
 
 You can also view the [API Documentation](https://pub.dev/documentation/angel3_framework/latest/).
