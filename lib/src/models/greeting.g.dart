@@ -29,7 +29,7 @@ class GreetingMigration extends Migration {
 
 class GreetingQuery extends Query<Greeting, GreetingQueryWhere> {
   GreetingQuery({Set<String>? trampoline}) {
-    trampoline ??= Set();
+    trampoline ??= <String>{};
     trampoline.add(tableName);
     _where = GreetingQueryWhere(this);
   }
