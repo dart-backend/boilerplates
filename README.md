@@ -29,7 +29,7 @@ Once you have [Dart](https://dart.dev/get-dart) installed, bootstrapping a proje
 Install the [Angel3 CLI](https://github.com/dukefirehawk/angel3-cli):
 
 ```bash
-pub global activate angel_cli
+pub global activate angel3_cli
 ```
 
 Bootstrap a project:
