@@ -1,5 +1,6 @@
-[![version](https://img.shields.io/badge/pub-v1.0.0-brightgreen)](https://github.com/dukefirehawk/boilerplates/blob/angel3-orm)
-[![Angel3 Framework](https://img.shields.io/badge/pub-v4.0.0-brightgreen)](https://pub.dartlang.org/packages/angel3_framework)
+[![Angel 3 Framework](./logo3.png)](https://github.com/dukefirehawk/angel)
+
+[![Version](https://img.shields.io/badge/pub-v4.0.0-brightgreen)](https://pub.dartlang.org/packages/angel3_framework)
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
 [![Gitter](https://img.shields.io/gitter/room/angel_dart/discussion)](https://gitter.im/angel_dart/discussion)
 
