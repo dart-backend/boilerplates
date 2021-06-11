@@ -1,8 +1,8 @@
 
-[![Angel 3 Framework](./logo3.png)]
+[![Angel 3 Framework](./logo3.png)](https://github.com/dukefirehawk/angel)
 
-<!--- (https://angel-dart.dev) -->
-[![version](https://img.shields.io/badge/pub-v4.0.0-brightgreen)](https://pub.dartlang.org/packages/angel3_framework)
+
+[![Version](https://img.shields.io/badge/pub-v4.0.0-brightgreen)](https://pub.dartlang.org/packages/angel3_framework)
 [![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/angel_dart/discussion)
 
