@@ -1,5 +1,5 @@
 /// This app's route configuration.
-library myapp.src.routes;
+library angel.src.routes;
 
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_static/angel3_static.dart';

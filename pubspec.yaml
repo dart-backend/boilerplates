@@ -1,8 +1,8 @@
-name: myapp
-version: 4.0.0
-description: An app that's going to be amazing pretty soon.
+name: angel3_basic
+version: 1.0.0
+description: A boilerplate template for building Angel3 application
 publish_to: none # Ensure we don't accidentally publish our private code! ;)
-homepage: https://github.com/dukefirehawk/angel
+homepage: https://github.com/dukefirehawk/boilerplates
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:

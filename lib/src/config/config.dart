@@ -1,5 +1,5 @@
 /// Configuration for this Angel instance.
-library myapp.src.config;
+library angel.src.config;
 
 import 'package:angel3_configuration/angel3_configuration.dart';
 import 'package:angel3_framework/angel3_framework.dart';
