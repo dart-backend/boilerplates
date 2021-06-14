@@ -1,6 +1,6 @@
 import 'package:angel3_container/mirrors.dart';
 import 'package:angel3_production/angel3_production.dart';
-import 'package:angel3_basic/angel.dart';
+import 'package:angel/angel.dart';
 
 // NOTE: By default, the Runner class does not use the `MirrorsReflector`, or any
 // reflector, by default.
