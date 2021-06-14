@@ -1,5 +1,5 @@
-import 'package:angel_serialize/angel_serialize.dart';
-import 'package:graphql_schema/graphql_schema.dart';
+import 'package:angel3_serialize/angel3_serialize.dart';
+import 'package:graphql_schema2/graphql_schema2.dart';
 part 'todo.g.dart';
 
 @graphQLClass

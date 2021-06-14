@@ -1,7 +1,7 @@
 import 'package:angel/src/models/todo.dart';
-import 'package:angel_framework/angel_framework.dart';
-import 'package:angel_graphql/angel_graphql.dart';
-import 'package:graphql_schema/graphql_schema.dart';
+import 'package:angel3_framework/angel3_framework.dart';
+import 'package:angel3_graphql/angel3_graphql.dart';
+import 'package:graphql_schema2/graphql_schema2.dart';
 
 /// Find or create an in-memory Todo store.
 MapService? _getTodoService(Angel app) {
