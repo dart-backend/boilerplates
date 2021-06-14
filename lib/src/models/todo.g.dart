@@ -11,26 +11,26 @@ class Todo extends _Todo {
   Todo({this.id, this.text, this.isComplete, this.createdAt, this.updatedAt});
 
   @override
-  final String id;
+  final String? id;
 
   @override
-  final String text;
+  final String? text;
 
   @override
-  final bool isComplete;
+  final bool? isComplete;
 
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   Todo copyWith(
-      {String id,
-      String text,
-      bool isComplete,
-      DateTime createdAt,
-      DateTime updatedAt}) {
+      {String? id,
+      String? text,
+      bool? isComplete,
+      DateTime? createdAt,
+      DateTime? updatedAt}) {
     return Todo(
         id: id ?? this.id,
         text: text ?? this.text,
@@ -39,6 +39,7 @@ class Todo extends _Todo {
         updatedAt: updatedAt ?? this.updatedAt);
   }
 
+  @override
   bool operator ==(other) {
     return other is _Todo &&
         other.id == id &&
@@ -55,7 +56,7 @@ class Todo extends _Todo {
 
   @override
   String toString() {
-    return "Todo(id=$id, text=$text, isComplete=$isComplete, createdAt=$createdAt, updatedAt=$updatedAt)";
+    return 'Todo(id=$id, text=$text, isComplete=$isComplete, createdAt=$createdAt, updatedAt=$updatedAt)';
   }
 
   Map<String, dynamic> toJson() {
@@ -87,30 +88,27 @@ class TodoSerializer extends Codec<Todo, Map> {
   const TodoSerializer();
 
   @override
-  get encoder => const TodoEncoder();
+  TodoEncoder get encoder => const TodoEncoder();
   @override
-  get decoder => const TodoDecoder();
+  TodoDecoder get decoder => const TodoDecoder();
   static Todo fromMap(Map map) {
     return Todo(
-        id: map['id'] as String,
-        text: map['text'] as String,
-        isComplete: map['is_complete'] as bool,
+        id: map['id'] as String?,
+        text: map['text'] as String?,
+        isComplete: map['is_complete'] as bool?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
-                ? (map['created_at'] as DateTime)
+                ? (map['created_at'] as DateTime?)
                 : DateTime.parse(map['created_at'].toString()))
             : null,
         updatedAt: map['updated_at'] != null
             ? (map['updated_at'] is DateTime
-                ? (map['updated_at'] as DateTime)
+                ? (map['updated_at'] as DateTime?)
                 : DateTime.parse(map['updated_at'].toString()))
             : null);
   }
 
   static Map<String, dynamic> toMap(_Todo model) {
-    if (model == null) {
-      return null;
-    }
     return {
       'id': model.id,
       'text': model.text,

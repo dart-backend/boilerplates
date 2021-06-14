@@ -1,85 +1,77 @@
 name: angel
 description: An app that's going to be amazing pretty soon.
-publish_to: none # Ensure we don't accidentally publish our private code! ;)
+publish_to: none 
 environment:
-  sdk: '>=2.0.0-dev <3.0.0'
-homepage: https://github.com/angel-dart/angel
+  sdk: '>=2.12.0 <3.0.0'
+homepage: https://github.com/dukefirehawk/boilerplates
 dependencies:
-  angel_auth: ^2.0.0 # Supports stateless authentication via JWT
-  angel_configuration: ^2.0.0 # Loads application configuration, along with support for .env files.
-  angel_framework: ^2.0.0 # The core server library.
-  angel_graphql: ^1.0.0 # Infrastructure for serving GraphQL.
-  angel_jael: ^2.0.0 # Server-side templating engine
-  angel_production: ^1.0.0 # Production application runner.
-  angel_static: ^2.0.0 # Static file server
-  angel_validate: ^2.0.0 # Allows for validation of input data
-dev_dependencies:
-  angel_hot: ^2.0.0 # Hot-reloading support. :)
-  angel_serialize_generator: # Generates serialization code, and more.
-  angel_test: ^2.0.0 # Utilities for testing Angel servers.
-  build_runner: ^1.0.0 # Runs code builders.
-  graphql_generator: ^1.0.0 # Generates GraphQL schemas statically.
-  io: ^0.3.2 # For pretty printing.
-  pedantic: ^1.0.0 # Enforces Dart style conventions.
-  test: ^1.0.0 # For unit testing.
-dependency_overrides:
   angel_auth:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/auth
   angel_configuration:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/configuration
   angel_framework:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/framework
+  angel_graphql:
+    git: 
+      url: https://github.com/dukefirehawk/graphql_dart.git
+      ref: sdk-2.12.x_nnbd
+      path: angel_graphql
   angel_jael:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/jael/angel_jael
   angel_production:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/production
   angel_static:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/static
   angel_validate:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/validate
+dev_dependencies:
   angel_hot:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/hot
-  angel_test:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
-      path: packages/test
-  angel_graphql:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
-      path: packages/graphql/angel_graphql
   angel_serialize_generator:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
+      ref: sdk-2.12.x_nnbd
       path: packages/serialize/angel_serialize_generator
-  graphql_generator:
+  angel_test:
     git: 
       url: https://github.com/dukefirehawk/angel.git
-      ref: sdk-2.12.x
-      path: packages/graphql/graphql_generator
+      ref: sdk-2.12.x_nnbd
+      path: packages/test
+  pretty_logging:
+    git: 
+      url: https://github.com/dukefirehawk/angel.git
+      ref: sdk-2.12.x_nnbd
+      path: packages/pretty_logging
+  graphql_generator:
+    git: 
+      url: https://github.com/dukefirehawk/graphql_dart.git
+      ref: sdk-2.12.x_nnbd
+      path: graphql_generator
+  build_runner: ^2.0.4 
+  io: ^1.0.0 
+  pedantic: ^1.11.0 
+  test: ^1.17.7 

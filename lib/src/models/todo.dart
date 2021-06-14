@@ -5,7 +5,7 @@ part 'todo.g.dart';
 @graphQLClass
 @serializable
 abstract class _Todo extends Model {
-  String get text;
+  String? get text;
 
-  bool get isComplete;
+  bool? get isComplete;
 }
