@@ -1,4 +1,4 @@
-import 'package:angel3_app/angel.dart';
+import 'package:angel/angel.dart';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_test/angel3_test.dart';
 import 'package:test/test.dart';

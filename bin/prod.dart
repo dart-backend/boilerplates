@@ -1,4 +1,4 @@
-import 'package:angel3_app/angel.dart';
+import 'package:angel/angel.dart';
 import 'package:angel3_container/mirrors.dart';
 import 'package:angel3_production/angel3_production.dart';
 
