@@ -1,6 +1,3 @@
-/// This app's route configuration.
-library angel.src.routes;
-
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_static/angel3_static.dart';
 import 'package:file/file.dart';
@@ -10,8 +7,8 @@ import 'graphql/graphql.dart' as graphql;
 /// Put your app routes here!
 ///
 /// See the wiki for information about routing, requests, and responses:
-/// * https://github.com/angel-dart/angel/wiki/Basic-Routing
-/// * https://github.com/angel-dart/angel/wiki/Requests-&-Responses
+/// * https://angel3-docs.dukefirehawk.com/guides/basic-routing
+/// * https://angel3-docs.dukefirehawk.com/guides/requests-and-responses
 AngelConfigurer configureServer(FileSystem fileSystem) {
   return (Angel app) async {
     // Typically, you want to mount controllers first, after any global middleware.
@@ -31,7 +28,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     //
     // Read the following two sources for documentation:
     // * https://medium.com/the-angel-framework/serving-static-files-with-the-angel-framework-2ddc7a2b84ae
-    // * https://github.com/angel-dart/static
+    // * https://pub.dev/packages/angel3_static
     if (!app.environment.isProduction) {
       var vDir = VirtualDirectory(
         app,
@@ -47,7 +44,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     // Set our application up to handle different errors.
     //
     // Read the following for documentation:
-    // * https://github.com/angel-dart/angel/wiki/Error-Handling
+    // * https://angel3-docs.dukefirehawk.com/guides/error-handling
 
     var oldErrorHandler = app.errorHandler;
     app.errorHandler = (e, req, res) async {
