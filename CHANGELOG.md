@@ -1,2 +1,6 @@
-# 1.0.0
-* Application template to build web application with `Angel3` framework
+# Change Log
+
+## 1.0.0
+
+* Changed to use `angel3` packages
+* Updated to support NNBD
