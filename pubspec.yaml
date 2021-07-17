@@ -1,10 +1,9 @@
 name: angel
 version: 1.0.0
-description: A boilerplate template for building Angel3 application with ORM enabled
+description: An ORM starter application for Angel3 framework
 publish_to: none
 environment:
   sdk: '>=2.12.0 <3.0.0'
-homepage: https://github.com/dukefirehawk/boilerplates
 dependencies:
   angel3_auth: ^4.0.0
   angel3_configuration: ^4.0.0

@@ -1,61 +1,58 @@
-[![Angel 3 Framework](./logo3.png)](https://github.com/dukefirehawk/angel)
+# ORM Starter Application for Angel3 framework
 
-[![Version](https://img.shields.io/badge/pub-v4.0.0-brightgreen)](https://pub.dartlang.org/packages/angel3_framework)
-[![Null Safety](https://img.shields.io/badge/null-safety-brightgreen)](https://dart.dev/null-safety)
-[![Gitter](https://img.shields.io/gitter/room/angel_dart/discussion)](https://gitter.im/angel_dart/discussion)
-
-[![License](https://img.shields.io/github/license/dukefirehawk/angel)](https://github.com/dukefirehawk/boilerplates/blob/angel3-orm/LICENSE)
-
-**A polished, production-ready backend framework in Dart.**
-
-*Note: This repo is an application boilerplate ,and not the underlying framework library.*
-
------
-## About
-Angel is a full-stack Web framework in Dart. It aims to
-streamline development by providing many common features
-out-of-the-box in a consistent manner.
-
-With features like the following, Angel is the all-in-one framework you should choose to build your next project:
-* [GraphQL Support](https://github.com/dukefirehawk/angel/tree/master/packages/graphql)
-* [PostgreSQL ORM](https://github.com/dukefirehawk/angel/tree/master/packages/orm)
-* [Dependency Injection](https://angel3-docs.dukefirehawk.com/guides/dependency-injection)
-* And [much more](https://github.com/dukefirehawk/angel)...
+This is an ORM starter application for [Angel3 framework](https://pub.dartlang.org/packages/angel3_framework) which is a full-stack Web framework in Dart. The default database is `postgresql`. `mysql` support is still in active development.
 
 ## Installation & Setup
 
-Once you have [Dart](https://dart.dev/get-dart) installed, bootstrapping a project is as simple as running a few shell commands:
+1. Download and install [Dart](https://dart.dev/get-dart).
+2. Install `postgresql` version 9, 10, 11 or 12. **postgresql 13 is not working as the driver do not support SCRAM**
+3. Create a new user and database in postgres using `psql` cli. For example:
 
-Install the [Angel3 CLI](https://github.com/dukefirehawk/angel3-cli):
+   ```sql
+    postgres=# create database appdb;
+    postgres=# create user appuser with encrypted password 'App1970#';
+    postgres=# grant all privileges on database appdb to appuser;
+   ```
 
-```bash
-pub global activate angel3_cli
-```
+4. Update the `postgres` section in the `config/default.yaml` file with the newly created user and database name.
 
-Bootstrap a project:
+   ```yaml
+    postgres:
+        host: localhost
+        port: 5432
+        database_name: appdb
+        username: appuser
+        password: App1970#
+        useSSL: false
+        time_zone: UTC
+   ```
 
-```bash
-angel init hello
-```
+### Development
 
-You can even have your server run and be *hot-reloaded* on file changes:
+1. Run the following command to start Angel3 server in dev mode to *hot-reloaded* on file changes:
 
-```bash
-dart --observe bin/dev.dart
-```
+    ```bash
+    dart --observe bin/dev.dart
+    ```
 
-Next, check out the [detailed documentation](https://angel3-docs.dukefirehawk.com/guides) to learn to flesh out your project.
+2. Modify the code and watch the changes applied to the application
 
-## Examples and Documentation
-Visit the [documentation](https://angel3-docs.dukefirehawk.com/guides)
-for dozens of guides and resources, including video tutorials,
-to get up and running as quickly as possible with Angel.
+### Production
 
-Examples and complete projects can be found
-[here](https://github.com/dukefirehawk/angel3-examples).
+1. Run the following command:
 
+    ```bash
+    dart bin/prod.dart
+    ```
+
+2. Run as docker. Edit and run the provided `Dockerfile` to build the image.
+
+## Resources
+
+Visit the [Developer Guide](https://angel3-docs.dukefirehawk.com/guides) for dozens of guides and resources, including video tutorials, to get up and running as quickly as possible with Angel3.
+
+Examples and complete projects can be found [here](https://github.com/dukefirehawk/angel3-examples).
 
 You can also view the [API Documentation](https://pub.dev/documentation/angel3_framework/latest/).
 
 There is also an [Awesome Angel :fire:](https://github.com/dukefirehawk/angel3-awesome) list.
-

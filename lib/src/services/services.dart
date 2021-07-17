@@ -1,6 +1,3 @@
-/// Declare services here!
-library angel.services;
-
 import 'dart:async';
 import 'package:angel3_framework/angel3_framework.dart';
 

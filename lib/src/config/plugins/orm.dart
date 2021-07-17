@@ -24,7 +24,8 @@ Future<PostgreSQLConnection> connectToPostgres(Map configuration) async {
       postgresConfig['port'] as int? ?? 5432,
       postgresConfig['database_name'] as String? ??
           Platform.environment['USER'] ??
-          Platform.environment['USERNAME']!,
+          Platform.environment['USERNAME'] ??
+          '',
       username: postgresConfig['username'] as String?,
       password: postgresConfig['password'] as String?,
       timeZone: postgresConfig['time_zone'] as String? ?? 'UTC',
