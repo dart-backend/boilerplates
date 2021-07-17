@@ -1,6 +1,4 @@
 /// Custom plugins go here.
-library angel.src.config.plugins;
-
 import 'dart:async';
 import 'package:angel3_framework/angel3_framework.dart';
 
