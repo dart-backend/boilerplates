@@ -18,6 +18,7 @@ dependencies:
   angel3_validate: ^4.0.0
   angel3_pretty_logging: ^3.0.0
   optional: ^6.0.0-nullsafety.2
+  logging: ^1.0.0
 dev_dependencies:
   angel3_hot: ^4.0.0
   angel3_migration_runner: ^4.0.0-beta.1

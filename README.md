@@ -27,6 +27,12 @@ This is an ORM starter application for [Angel3 framework](https://pub.dartlang.o
         time_zone: UTC
    ```
 
+5. Run the migration to generate `migrations` and `greetings` tables in the database.
+
+    ```bash
+    dart bin/migration.dart
+    ```
+
 ### Development
 
 1. Run the following command to start Angel3 server in dev mode to *hot-reloaded* on file changes:

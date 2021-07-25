@@ -78,7 +78,7 @@ crashlytics-build.properties
 fabric.properties
 
 ### VSCode template
-.vscode/*
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -90,4 +90,3 @@ logs/
 server_log.txt
 
 .metals/
-.vscode/
