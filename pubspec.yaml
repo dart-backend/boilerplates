@@ -6,18 +6,18 @@ environment:
 dependencies:
   angel3_auth: ^4.0.0
   angel3_configuration: ^4.0.0
-  angel3_framework: ^4.0.0
+  angel3_framework: ^4.1.0
   angel3_graphql: ^2.0.0
   angel3_jael: ^4.0.0
   angel3_production: ^3.0.0
   angel3_static: ^4.0.0
   angel3_validate: ^4.0.0
 dev_dependencies:
-  angel3_hot: ^4.0.0
-  angel3_serialize_generator: ^4.0.0
+  angel3_hot: ^4.1.0
+  angel3_serialize_generator: ^4.1.0
   angel3_test: ^4.0.0
   angel3_pretty_logging: ^3.0.0
-  graphql_generator2: ^2.0.0
+  graphql_generator2: ^2.1.0
   build_runner: ^2.0.4 
   io: ^1.0.0 
   pedantic: ^1.11.0 
