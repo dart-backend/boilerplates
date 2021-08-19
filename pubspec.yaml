@@ -20,7 +20,7 @@ dependencies:
   optional: ^6.0.0
   logging: ^1.0.0
 dev_dependencies:
-  angel3_hot: ^4.0.0
+  angel3_hot: ^4.1.0
   angel3_migration_runner: ^4.0.0
   angel3_orm_generator: ^4.1.0
   angel3_serialize_generator: ^4.1.0
