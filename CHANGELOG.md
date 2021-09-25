@@ -6,3 +6,4 @@
 * Updated to support NNBD
 * Updated README
 * Updated default `postgresql` setup
+* Updated linter to `package:lints`
