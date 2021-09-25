@@ -4,3 +4,4 @@
 
 * Changed to use `angel3` packages
 * Updated to support NNBD
+* Updated linter to `package:lints`
