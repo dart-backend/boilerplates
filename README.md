@@ -1,7 +1,7 @@
 
 # Basic Starter Application for Angel3 framework
 
-This is a basic starter application for [Angel3 framework](https://pub.dartlang.org/packages/angel3_framework) which is a full-stack Web framework in Dart.
+This is a basic starter application for [Angel3 framework](https://angel3-framework.web.app) which is a full-stack Web framework in Dart.
 
 ## Installation & Setup
 
@@ -31,8 +31,4 @@ This is a basic starter application for [Angel3 framework](https://pub.dartlang.
 
 Visit the [Developer Guide](https://angel3-docs.dukefirehawk.com/guides) for dozens of guides and resources, including video tutorials, to get up and running as quickly as possible with Angel3.
 
-Examples and complete projects can be found [here](https://github.com/dukefirehawk/angel3-examples).
-
-You can also view the [API Documentation](https://pub.dev/documentation/angel3_framework/latest/).
-
-There is also an [Awesome Angel :fire:](https://github.com/dukefirehawk/angel3-awesome) list.
+Examples and complete projects can be found [here](https://angel3-framework.web.app/#/examples).
