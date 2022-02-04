@@ -30,7 +30,7 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 5. Run the migration to generate `migrations` and `greetings` tables in the database.
 
     ```bash
-    dart bin/migration.dart
+    dart bin/migrate.dart up
     ```
 
 ### Development
@@ -43,6 +43,25 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 
 2. Modify the code and watch the changes applied to the application
 
+
+3. Insert a message into DB:
+
+    ```
+    curl -H "Content-Type: application/json" -X POST -d '{"message":"OK_Message" }' "http://localhost:3000/greetings/"
+    ```
+
+    or
+
+    ```
+    curl -X POST -d 'message=OK_Message2' "http://localhost:3000/greetings/"
+    ```
+
+4. Query DB:
+
+    ```
+    http://localhost:3000/greetings/
+    ```
+    
 ### Production
 
 1. Run the following command:
