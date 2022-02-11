@@ -33,7 +33,8 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
         var executor = req.container!.make<QueryExecutor>()!;
         var message = req.bodyAsMap['message'].toString();
         var query = GreetingQuery()..values.message = message;
-        return await query.insert(executor);
+        var optional = await query.insert(executor);
+        return optional.value;
       }
     });
 
