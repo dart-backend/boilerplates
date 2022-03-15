@@ -6,15 +6,18 @@ import 'package:angel3_orm_postgres/angel3_orm_postgres.dart';
 import 'package:postgres/postgres.dart';
 
 Future<void> configureServer(Angel app) async {
-  var connection = await connectToPostgres(app.configuration);
-  await connection.open();
+  try {
+    var connection = await connectToPostgres(app.configuration);
+    await connection.open();
 
-  var logger = app.environment.isProduction ? null : app.logger;
-  var executor = PostgreSqlExecutor(connection, logger: logger);
+    var executor = PostgreSqlExecutor(connection, logger: app.logger);
 
-  app
-    ..container!.registerSingleton<QueryExecutor>(executor)
-    ..shutdownHooks.add((_) => connection.close());
+    app
+      ..container.registerSingleton<QueryExecutor>(executor)
+      ..shutdownHooks.add((_) => connection.close());
+  } catch (e) {
+    app.logger.severe("Failed to connect to PostgreSQL. ORM disabled.", e);
+  }
 }
 
 Future<PostgreSQLConnection> connectToPostgres(Map configuration) async {

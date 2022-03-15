@@ -19,7 +19,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.get('/', (req, res) => res.render('hello'));
 
     app.get('/greetings', (req, res) {
-      var executor = req.container!.make<QueryExecutor>()!;
+      var executor = req.container!.make<QueryExecutor>();
       var query = GreetingQuery();
       return query.get(executor);
     });
@@ -30,7 +30,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       if (!req.bodyAsMap.containsKey('message')) {
         throw AngelHttpException.badRequest(message: 'Missing "message".');
       } else {
-        var executor = req.container!.make<QueryExecutor>()!;
+        var executor = req.container!.make<QueryExecutor>();
         var message = req.bodyAsMap['message'].toString();
         var query = GreetingQuery()..values.message = message;
         var optional = await query.insert(executor);
@@ -40,7 +40,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
 
     app.get('/greetings/:message', (req, res) {
       var message = req.params['message'] as String;
-      var executor = req.container!.make<QueryExecutor>()!;
+      var executor = req.container!.make<QueryExecutor>();
       var query = GreetingQuery()..where!.message.equals(message);
       return query.get(executor);
     });

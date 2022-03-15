@@ -1,10 +1,11 @@
 .dart_tool
 .idea
-.pub
 .vscode
+.metals
+.git
+.github
+.packages
 logs/
 test/
 build/
-.analysis-options
-.packages
-*.g.dart
+pubspec.lock

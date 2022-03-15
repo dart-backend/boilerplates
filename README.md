@@ -5,7 +5,7 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 ## Installation & Setup
 
 1. Download and install [Dart](https://dart.dev/get-dart).
-2. Install `postgresql` version 9, 10, 11 or 12. **postgresql 13 is not working as the driver do not support SCRAM**
+2. Install `postgresql` version 10, 11, 12 and 13
 3. Create a new user and database in postgres using `psql` cli. For example:
 
    ```sql
@@ -46,13 +46,13 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 
 3. Insert a message into DB:
 
-    ```
+    ```bash
     curl -H "Content-Type: application/json" -X POST -d '{"message":"OK_Message" }' "http://localhost:3000/greetings/"
     ```
 
     or
 
-    ```
+    ```bash
     curl -X POST -d 'message=OK_Message2' "http://localhost:3000/greetings/"
     ```
 
@@ -61,7 +61,7 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
     ```
     http://localhost:3000/greetings/
     ```
-    
+
 ### Production
 
 1. Run the following command:

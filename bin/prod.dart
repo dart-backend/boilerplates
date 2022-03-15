@@ -26,5 +26,5 @@ import 'package:angel3_production/angel3_production.dart';
 //
 // https://gitter.im/angel_dart/discussion
 void main(List<String> args) =>
-    Runner('{{angel}}', configureServer, reflector: MirrorsReflector())
+    Runner('[Angel3]', configureServer, reflector: MirrorsReflector())
         .run(args);
