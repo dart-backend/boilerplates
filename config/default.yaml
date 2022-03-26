@@ -8,5 +8,5 @@ postgres:
   database_name: appdb
   username: appuser
   password: App1970#
-  useSSL: false
+  use_ssl: false
   time_zone: UTC
