@@ -10,3 +10,4 @@ postgres:
   password: App1970#
   use_ssl: false
   time_zone: UTC
+ 
