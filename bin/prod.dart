@@ -17,7 +17,7 @@ import 'package:angel3_production/angel3_production.dart';
 // so use it if possible.
 //
 // However, the following alternatives exist:
-// * Generation via `package:angel_container_generator`
+// * Generation via `package:angel3_container_generator`
 // * Creating an instance of `StaticReflector`
 // * Manually implementing the `Reflector` interface (cumbersome; not recommended)
 //
@@ -26,5 +26,4 @@ import 'package:angel3_production/angel3_production.dart';
 //
 // https://gitter.im/angel_dart/discussion
 void main(List<String> args) =>
-    Runner('{{angel}}', configureServer, reflector: MirrorsReflector())
-        .run(args);
+    Runner('Angel3', configureServer, reflector: MirrorsReflector()).run(args);
