@@ -2,7 +2,7 @@ name: angel
 description: A graphql starter application for Angel3 framework
 publish_to: none 
 environment:
-  sdk: '>=2.15.0 <3.0.0'
+  sdk: '>=2.16.0 <3.0.0'
 dependencies:
   angel3_auth: ^6.0.0
   angel3_configuration: ^6.0.0
@@ -16,145 +16,9 @@ dev_dependencies:
   angel3_hot: ^6.0.0
   angel3_serialize_generator: ^6.0.0
   angel3_test: ^6.0.0
-  graphql_generator2: ^3.0.0
+  graphql_generator2: ^4.0.0
   belatuk_pretty_logging: ^4.0.0
   build_runner: ^2.0.4 
   io: ^1.0.0 
-  test: ^1.17.5
+  test: ^1.21.0
   lints: ^1.0.0 
-dependency_overrides:
-  angel3_container:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/container/angel_container
-  angel3_framework:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/framework
-  angel3_http_exception:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/http_exception
-  angel3_model:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/model
-  angel3_route:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/route
-  angel3_mock_request:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/mock_request
-  angel3_auth:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/auth
-  angel3_client:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/client
-  angel3_websocket:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/websocket
-  angel3_validate:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/validate
-  angel3_configuration:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/configuration
-  angel3_test:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/test
-  jael3:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/jael/jael
-  angel3_jael:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/jael/angel_jael
-  jael3_preprocessor:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/jael/jael_preprocessor
-  angel3_serialize:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/serialize/angel_serialize
-  angel3_serialize_generator:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/serialize/angel_serialize_generator
-  angel3_hot:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/hot
-  angel3_static:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/static
-  angel3_production:
-    git: 
-     url: https://github.com/dukefirehawk/angel.git
-     ref: release/6.0.0
-     path: packages/production
-  angel3_orm:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/orm/angel_orm
-  angel3_orm_generator:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/orm/angel_orm_generator
-  angel3_orm_postgres:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/orm/angel_orm_postgres
-  angel3_migration:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/orm/angel_migration
-  angel3_migration_runner:
-    git: 
-      url: https://github.com/dukefirehawk/angel.git
-      ref: release/6.0.0
-      path: packages/orm/angel_migration_runner
-  angel3_graphql:
-    git: 
-      url: https://github.com/dukefirehawk/graphql_dart.git
-      ref: releaase/6.0.0
-      path: angel_graphql
-  graphql_generator2:
-    git: 
-      url: https://github.com/dukefirehawk/graphql_dart.git
-      ref: releaase/6.0.0
-      path: graphql_generator
