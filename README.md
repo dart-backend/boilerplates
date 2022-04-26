@@ -43,7 +43,6 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 
 2. Modify the code and watch the changes applied to the application
 
-
 3. Insert a message into DB:
 
     ```bash

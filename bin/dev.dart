@@ -11,7 +11,7 @@ void main() async {
   hierarchicalLoggingEnabled = true;
 
   var hot = HotReloader(() async {
-    var logger = Logger.detached('[Angel3]')
+    var logger = Logger.detached('Angel3')
       ..level = Level.ALL
       ..onRecord.listen(prettyLog);
     var app = Angel(logger: logger, reflector: MirrorsReflector());
