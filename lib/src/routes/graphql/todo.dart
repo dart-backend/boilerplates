@@ -8,8 +8,8 @@ MapService? _getTodoService(Angel app) {
   const key = 'todoService';
 
   // If there is already an existing singleton, return it.
-  if (app.container!.hasNamed(key)) {
-    return app.container!.findByName<MapService>(key);
+  if (app.container.hasNamed(key)) {
+    return app.container.findByName<MapService>(key);
   }
 
   // Create an in-memory service. We will use this
@@ -18,7 +18,7 @@ MapService? _getTodoService(Angel app) {
 
   // Register this service as a named singleton in the app container,
   // so that we do not inadvertently create another instance.
-  app.container!.registerNamedSingleton(key, mapService);
+  app.container.registerNamedSingleton(key, mapService);
 
   return mapService;
 }
