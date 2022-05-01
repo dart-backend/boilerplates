@@ -2,12 +2,13 @@
 jwt_secret: INSECURE_DEFAULT_SECRET
 host: 127.0.0.1
 port: 3000
-mariadb:
+mysql:
   host: localhost
   port: 3306
   database_name: appdb
   username: appuser
   password: App1970#
+  use_ssl: false
 
 
  

@@ -3,6 +3,7 @@ import 'package:angel/models.dart';
 import 'package:angel3_configuration/angel3_configuration.dart';
 import 'package:angel3_migration_runner/angel3_migration_runner.dart';
 import 'package:angel3_migration_runner/mariadb.dart';
+//import 'package:angel3_migration_runner/mysql.dart';
 import 'package:file/local.dart';
 import 'package:logging/logging.dart';
 
@@ -26,6 +27,14 @@ void main(List<String> args) async {
   var migrationRunner = MariaDbMigrationRunner(connection, migrations: [
     GreetingMigration(),
   ]);
+
+  // MySQL database
+  /*
+  var connection = await connectToMysql(configuration);
+  var migrationRunner = MySqlMigrationRunner(connection, migrations: [
+    GreetingMigration(),
+  ]);
+  */
 
   await runMigrations(migrationRunner, args);
 }
