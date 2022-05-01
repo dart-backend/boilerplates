@@ -29,6 +29,3 @@ dev_dependencies:
   io: ^1.0.0
   test: ^1.21.0
   lints: ^1.0.0
-dependency_overrides:
-   angel3_migration_runner:
-     path: ../belatuk/packages/orm/angel_migration_runner
