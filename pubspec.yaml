@@ -3,7 +3,7 @@ version: 1.0.0
 description: An ORM starter application for Angel3 framework
 publish_to: none
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
 dependencies:
   angel3_auth: ^7.0.0
   angel3_configuration: ^7.0.0
@@ -16,7 +16,7 @@ dependencies:
   angel3_production: ^7.0.0
   angel3_static: ^7.0.0
   angel3_validate: ^7.0.0
-  belatuk_pretty_logging: ^4.0.0
+  belatuk_pretty_logging: ^5.0.0
   optional: ^6.0.0
   logging: ^1.0.0
 dev_dependencies:
