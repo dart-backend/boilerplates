@@ -10,8 +10,14 @@ dependencies:
   angel3_graphql: ^8.0.0
   angel3_jael: ^8.0.0
   angel3_production: ^8.0.0
+  angel3_container: ^8.0.0
   angel3_static: ^8.0.0
   angel3_validate: ^8.0.0
+  angel3_serialize: ^8.0.0
+  graphql_server2: ^6.0.0
+  graphql_schema2: ^6.0.0
+  file: ^7.0.0
+  logging: ^1.2.0
 dev_dependencies:
   angel3_hot: ^8.0.0
   angel3_serialize_generator: ^8.0.0
