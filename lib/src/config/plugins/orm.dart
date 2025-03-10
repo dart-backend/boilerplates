@@ -7,32 +7,58 @@ import 'package:postgres/postgres.dart';
 
 Future<void> configureServer(Angel app) async {
   try {
-    var connection = await connectToPostgres(app.configuration);
-    await connection.open();
+    var connector = await pooledPostgresConnections(app.configuration);
 
-    var executor = PostgreSqlExecutor(connection, logger: app.logger);
+    //var executor = PostgreSqlExecutor(connection, logger: app.logger);
+    var executor = PostgreSqlPoolExecutor(connector, logger: app.logger);
 
     app
       ..container.registerSingleton<QueryExecutor>(executor)
-      ..shutdownHooks.add((_) => connection.close());
+      ..shutdownHooks.add((_) => connector.close());
   } catch (e) {
     app.logger.severe("Failed to connect to PostgreSQL. ORM disabled.", e);
   }
 }
 
-Future<PostgreSQLConnection> connectToPostgres(Map configuration) async {
+Future<Pool<dynamic>> pooledPostgresConnections(Map configuration) async {
   var postgresConfig = configuration['postgres'] as Map? ?? {};
-  var connection = PostgreSQLConnection(
-      postgresConfig['host'] as String? ?? 'localhost',
-      postgresConfig['port'] as int? ?? 5432,
-      postgresConfig['database_name'] as String? ??
-          Platform.environment['USER'] ??
-          Platform.environment['USERNAME'] ??
-          '',
-      username: postgresConfig['username'] as String?,
-      password: postgresConfig['password'] as String?,
-      timeZone: postgresConfig['time_zone'] as String? ?? 'UTC',
-      timeoutInSeconds: postgresConfig['timeout_in_seconds'] as int? ?? 30,
-      useSSL: postgresConfig['use_ssl'] as bool? ?? false);
-  return connection;
+  return Pool.withEndpoints([
+    Endpoint(
+        host: postgresConfig['host'] as String? ?? 'localhost',
+        port: postgresConfig['port'] as int? ?? 5432,
+        database: postgresConfig['database_name'] as String? ??
+            Platform.environment['USER'] ??
+            Platform.environment['USERNAME'] ??
+            '',
+        username: postgresConfig['username'] as String?,
+        password: postgresConfig['password'] as String?)
+  ],
+      settings: PoolSettings(
+          maxConnectionAge: Duration(hours: 1),
+          maxConnectionCount: 20,
+          connectTimeout: Duration(
+              seconds: postgresConfig['timeout_in_seconds'] as int? ?? 30),
+          timeZone: postgresConfig['time_zone'] as String? ?? 'UTC',
+          sslMode: SslMode.disable));
+}
+
+Future<Connection> postgresConnection(Map configuration) async {
+  var postgresConfig = configuration['postgres'] as Map? ?? {};
+  return Connection.open(
+      Endpoint(
+          host: postgresConfig['host'] as String? ?? 'localhost',
+          port: postgresConfig['port'] as int? ?? 5432,
+          database: postgresConfig['database_name'] as String? ??
+              Platform.environment['USER'] ??
+              Platform.environment['USERNAME'] ??
+              '',
+          username: postgresConfig['username'] as String?,
+          password: postgresConfig['password'] as String?),
+      settings: PoolSettings(
+          maxConnectionAge: Duration(hours: 1),
+          maxConnectionCount: 20,
+          connectTimeout: Duration(
+              seconds: postgresConfig['timeout_in_seconds'] as int? ?? 30),
+          timeZone: postgresConfig['time_zone'] as String? ?? 'UTC',
+          sslMode: SslMode.disable));
 }
