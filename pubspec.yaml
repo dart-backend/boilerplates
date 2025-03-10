@@ -3,7 +3,7 @@ version: 1.0.0
 description: A basic starter application template for Angel3 framework
 publish_to: none
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 dependencies:
   angel3_auth: ^8.0.0
   angel3_configuration: ^8.0.0
@@ -13,15 +13,15 @@ dependencies:
   angel3_static: ^8.0.0
   angel3_validate: ^8.0.0
   angel3_container: ^8.0.0
+  angel3_hot: ^8.0.0
   belatuk_pretty_logging: ^6.0.0
   logging: ^1.2.0
   file: ^7.0.0
 dev_dependencies:
   angel3_test: ^8.0.0
-  angel3_hot: ^8.0.0
   io: ^1.0.0
-  test: ^1.24.0
-  lints: ^2.1.0
+  test: ^1.25.0
+  lints: ^5.0.0
 
 
 
