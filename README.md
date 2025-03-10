@@ -5,7 +5,7 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 ## Installation & Setup
 
 1. Download and install [Dart](https://dart.dev/get-dart).
-2. Install `postgresql` version 10, 11, 12 and 13
+2. Install `postgresql` version 13, 14, 15 or 16
 3. Create a new user and database in postgres using `psql` cli. For example:
 
    ```sql
