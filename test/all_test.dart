@@ -1,7 +1,7 @@
+import 'package:angel/angel.dart';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_test/angel3_test.dart';
 import 'package:test/test.dart';
-import 'package:angel/angel.dart';
 
 // Angel also includes facilities to make testing easier.
 //

@@ -21,3 +21,4 @@ CMD dart ./bin/prod.dart -p 3000 -a 0.0.0.0
 
 # Use -j flag to set higher number of isolates
 #CMD dart ./bin/prod.dart -p 3000 -a 0.0.0.0 -j 50
+
