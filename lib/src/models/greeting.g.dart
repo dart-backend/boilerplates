@@ -28,8 +28,10 @@ class GreetingMigration extends Migration {
 // **************************************************************************
 
 class GreetingQuery extends Query<Greeting, GreetingQueryWhere> {
-  GreetingQuery({Query? parent, Set<String>? trampoline})
-      : super(parent: parent) {
+  GreetingQuery({
+    Query? parent,
+    Set<String>? trampoline,
+  }) : super(parent: parent) {
     trampoline ??= <String>{};
     trampoline.add(tableName);
     _where = GreetingQueryWhere(this);
@@ -54,7 +56,12 @@ class GreetingQuery extends Query<Greeting, GreetingQueryWhere> {
 
   @override
   List<String> get fields {
-    const _fields = ['id', 'created_at', 'updated_at', 'message'];
+    const _fields = [
+      'id',
+      'created_at',
+      'updated_at',
+      'message',
+    ];
     return _selectedFields.isEmpty
         ? _fields
         : _fields.where((field) => _selectedFields.contains(field)).toList();
@@ -80,10 +87,13 @@ class GreetingQuery extends Query<Greeting, GreetingQueryWhere> {
       return Optional.empty();
     }
     var model = Greeting(
-        id: fields.contains('id') ? row[0].toString() : null,
-        createdAt: fields.contains('created_at') ? (row[1] as DateTime?) : null,
-        updatedAt: fields.contains('updated_at') ? (row[2] as DateTime?) : null,
-        message: fields.contains('message') ? (row[3] as String?) : null);
+      id: fields.contains('id') ? row[0].toString() : null,
+      createdAt:
+          fields.contains('created_at') ? mapToNullableDateTime(row[1]) : null,
+      updatedAt:
+          fields.contains('updated_at') ? mapToNullableDateTime(row[2]) : null,
+      message: fields.contains('message') ? (row[3] as String?) : null,
+    );
     return Optional.of(model);
   }
 
@@ -95,10 +105,22 @@ class GreetingQuery extends Query<Greeting, GreetingQueryWhere> {
 
 class GreetingQueryWhere extends QueryWhere {
   GreetingQueryWhere(GreetingQuery query)
-      : id = NumericSqlExpressionBuilder<int>(query, 'id'),
-        createdAt = DateTimeSqlExpressionBuilder(query, 'created_at'),
-        updatedAt = DateTimeSqlExpressionBuilder(query, 'updated_at'),
-        message = StringSqlExpressionBuilder(query, 'message');
+      : id = NumericSqlExpressionBuilder<int>(
+          query,
+          'id',
+        ),
+        createdAt = DateTimeSqlExpressionBuilder(
+          query,
+          'created_at',
+        ),
+        updatedAt = DateTimeSqlExpressionBuilder(
+          query,
+          'updated_at',
+        ),
+        message = StringSqlExpressionBuilder(
+          query,
+          'message',
+        );
 
   final NumericSqlExpressionBuilder<int> id;
 
@@ -110,7 +132,12 @@ class GreetingQueryWhere extends QueryWhere {
 
   @override
   List<SqlExpressionBuilder> get expressionBuilders {
-    return [id, createdAt, updatedAt, message];
+    return [
+      id,
+      createdAt,
+      updatedAt,
+      message,
+    ];
   }
 }
 
@@ -125,21 +152,25 @@ class GreetingQueryValues extends MapQueryValues {
   }
 
   set id(String? value) => values['id'] = value;
+
   DateTime? get createdAt {
     return (values['created_at'] as DateTime?);
   }
 
   set createdAt(DateTime? value) => values['created_at'] = value;
+
   DateTime? get updatedAt {
     return (values['updated_at'] as DateTime?);
   }
 
   set updatedAt(DateTime? value) => values['updated_at'] = value;
+
   String? get message {
     return (values['message'] as String?);
   }
 
   set message(String? value) => values['message'] = value;
+
   void copyFrom(Greeting model) {
     createdAt = model.createdAt;
     updatedAt = model.updatedAt;
@@ -153,7 +184,12 @@ class GreetingQueryValues extends MapQueryValues {
 
 @generatedSerializable
 class Greeting extends _Greeting {
-  Greeting({this.id, this.createdAt, this.updatedAt, required this.message});
+  Greeting({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    required this.message,
+  });
 
   /// A unique identifier corresponding to this item.
   @override
@@ -170,8 +206,12 @@ class Greeting extends _Greeting {
   @override
   String? message;
 
-  Greeting copyWith(
-      {String? id, DateTime? createdAt, DateTime? updatedAt, String? message}) {
+  Greeting copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? message,
+  }) {
     return Greeting(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
@@ -190,7 +230,12 @@ class Greeting extends _Greeting {
 
   @override
   int get hashCode {
-    return hashObjects([id, createdAt, updatedAt, message]);
+    return hashObjects([
+      id,
+      createdAt,
+      updatedAt,
+      message,
+    ]);
   }
 
   @override
@@ -228,8 +273,10 @@ class GreetingSerializer extends Codec<Greeting, Map> {
 
   @override
   GreetingEncoder get encoder => const GreetingEncoder();
+
   @override
   GreetingDecoder get decoder => const GreetingDecoder();
+
   static Greeting fromMap(Map map) {
     if (map['message'] == null) {
       throw FormatException("Missing required field 'message' on Greeting.");
@@ -268,7 +315,7 @@ abstract class GreetingFields {
     id,
     createdAt,
     updatedAt,
-    message
+    message,
   ];
 
   static const String id = 'id';
