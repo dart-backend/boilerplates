@@ -5,11 +5,6 @@ import 'package:angel3_container/mirrors.dart';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_hot/angel3_hot.dart';
 import 'package:logging/logging.dart';
-import 'package:belatuk_pretty_logging/belatuk_pretty_logging.dart';
-import 'package:angel3_container/mirrors.dart';
-import 'package:angel3_framework/angel3_framework.dart';
-import 'package:angel3_hot/angel3_hot.dart';
-import 'package:angel/angel.dart';
 
 void main() async {
   // Watch the config/ and web/ directories for changes, and hot-reload the server.
