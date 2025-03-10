@@ -24,5 +24,5 @@ void main(List<String> args) async {
   var migrationRunner = PostgresMigrationRunner(connection, migrations: [
     GreetingMigration(),
   ]);
-  return await runMigrations(migrationRunner, args);
+  await runMigrations(migrationRunner, args);
 }
