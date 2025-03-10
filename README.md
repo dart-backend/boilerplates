@@ -1,6 +1,6 @@
 # ORM Starter Application for Angel3 framework
 
-This is an ORM starter application for [Angel3 framework](https://angel3-framework.web.app) which is a full-stack Web framework in Dart. The default database is `postgresql`. `mysql` support is still in active development.
+This is an ORM starter application for [Angel3 framework](https://angel3-framework.web.app) which is a full-stack Web framework in Dart. The default database is `postgresql`.
 
 ## Installation & Setup
 
@@ -57,7 +57,7 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 
 4. Query DB:
 
-    ```
+    ```curl
     http://localhost:3000/greetings/
     ```
 
