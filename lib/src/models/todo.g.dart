@@ -8,55 +8,71 @@ part of 'todo.dart';
 
 @generatedSerializable
 class Todo extends _Todo {
-  Todo({this.id, this.text, this.isComplete, this.createdAt, this.updatedAt});
+  Todo({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.text,
+    this.isComplete,
+  });
+
+  /// A unique identifier corresponding to this item.
+  @override
+  String? id;
+
+  /// The time at which this item was created.
+  @override
+  DateTime? createdAt;
+
+  /// The last time at which this item was updated.
+  @override
+  DateTime? updatedAt;
 
   @override
-  final String? id;
+  String? text;
 
   @override
-  final String? text;
+  bool? isComplete;
 
-  @override
-  final bool? isComplete;
-
-  @override
-  final DateTime? createdAt;
-
-  @override
-  final DateTime? updatedAt;
-
-  Todo copyWith(
-      {String? id,
-      String? text,
-      bool? isComplete,
-      DateTime? createdAt,
-      DateTime? updatedAt}) {
+  Todo copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? text,
+    bool? isComplete,
+  }) {
     return Todo(
         id: id ?? this.id,
-        text: text ?? this.text,
-        isComplete: isComplete ?? this.isComplete,
         createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt);
+        updatedAt: updatedAt ?? this.updatedAt,
+        text: text ?? this.text,
+        isComplete: isComplete ?? this.isComplete);
   }
 
   @override
   bool operator ==(other) {
     return other is _Todo &&
         other.id == id &&
-        other.text == text &&
-        other.isComplete == isComplete &&
         other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.text == text &&
+        other.isComplete == isComplete;
   }
 
   @override
   int get hashCode {
-    return hashObjects([id, text, isComplete, createdAt, updatedAt]);
+    return hashObjects([
+      id,
+      createdAt,
+      updatedAt,
+      text,
+      isComplete,
+    ]);
   }
 
   @override
   String toString() {
-    return 'Todo(id=$id, text=$text, isComplete=$isComplete, createdAt=$createdAt, updatedAt=$updatedAt)';
+    return 'Todo(id=$id, createdAt=$createdAt, updatedAt=$updatedAt, text=$text, isComplete=$isComplete)';
   }
 
   Map<String, dynamic> toJson() {
@@ -89,32 +105,37 @@ class TodoSerializer extends Codec<Todo, Map> {
 
   @override
   TodoEncoder get encoder => const TodoEncoder();
+
   @override
   TodoDecoder get decoder => const TodoDecoder();
+
   static Todo fromMap(Map map) {
     return Todo(
         id: map['id'] as String?,
-        text: map['text'] as String?,
-        isComplete: map['is_complete'] as bool?,
         createdAt: map['created_at'] != null
             ? (map['created_at'] is DateTime
-                ? (map['created_at'] as DateTime?)
+                ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
             : null,
         updatedAt: map['updated_at'] != null
             ? (map['updated_at'] is DateTime
-                ? (map['updated_at'] as DateTime?)
+                ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null);
+            : null,
+        text: map['text'] as String?,
+        isComplete: map['is_complete'] as bool?);
   }
 
-  static Map<String, dynamic> toMap(_Todo model) {
+  static Map<String, dynamic> toMap(_Todo? model) {
+    if (model == null) {
+      throw FormatException("Required field [model] cannot be null");
+    }
     return {
       'id': model.id,
-      'text': model.text,
-      'is_complete': model.isComplete,
       'created_at': model.createdAt?.toIso8601String(),
-      'updated_at': model.updatedAt?.toIso8601String()
+      'updated_at': model.updatedAt?.toIso8601String(),
+      'text': model.text,
+      'is_complete': model.isComplete
     };
   }
 }
@@ -122,21 +143,21 @@ class TodoSerializer extends Codec<Todo, Map> {
 abstract class TodoFields {
   static const List<String> allFields = <String>[
     id,
+    createdAt,
+    updatedAt,
     text,
     isComplete,
-    createdAt,
-    updatedAt
   ];
 
   static const String id = 'id';
 
-  static const String text = 'text';
-
-  static const String isComplete = 'is_complete';
-
   static const String createdAt = 'created_at';
 
   static const String updatedAt = 'updated_at';
+
+  static const String text = 'text';
+
+  static const String isComplete = 'is_complete';
 }
 
 // **************************************************************************
@@ -144,12 +165,38 @@ abstract class TodoFields {
 // **************************************************************************
 
 /// Auto-generated from [Todo].
-final GraphQLObjectType todoGraphQLType =
-    objectType('Todo', isInterface: false, interfaces: [], fields: [
-  field('id', graphQLString),
-  field('text', graphQLString),
-  field('is_complete', graphQLBoolean),
-  field('created_at', graphQLDate),
-  field('updated_at', graphQLDate),
-  field('idAsInt', graphQLInt)
-]);
+final GraphQLObjectType todoGraphQLType = objectType(
+  'Todo',
+  isInterface: false,
+  interfaces: [],
+  fields: [
+    field(
+      'id',
+      graphQLString,
+    ),
+    field(
+      'created_at',
+      graphQLDate,
+    ),
+    field(
+      'updated_at',
+      graphQLDate,
+    ),
+    field(
+      'text',
+      graphQLString,
+    ),
+    field(
+      'is_complete',
+      graphQLBoolean,
+    ),
+    field(
+      'idAsInt',
+      graphQLInt,
+    ),
+    field(
+      'idAsString',
+      graphQLString,
+    ),
+  ],
+);
