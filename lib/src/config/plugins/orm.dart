@@ -24,15 +24,17 @@ Future<MySQLConnection> connectToMysql(Map configuration) async {
   var mysqlConfig = configuration['mysql'] as Map? ?? {};
 
   var connection = await MySQLConnection.createConnection(
-      host: mysqlConfig['host'] as String? ?? 'localhost',
-      port: mysqlConfig['port'] as int? ?? 3306,
-      databaseName: mysqlConfig['database_name'] as String? ??
-          Platform.environment['USER'] ??
-          Platform.environment['USERNAME'] ??
-          '',
-      userName: mysqlConfig['username'] as String? ?? '',
-      password: mysqlConfig['password'] as String? ?? '',
-      secure: mysqlConfig['use_ssl'] as bool? ?? false);
+    host: mysqlConfig['host'] as String? ?? 'localhost',
+    port: mysqlConfig['port'] as int? ?? 3306,
+    databaseName:
+        mysqlConfig['database_name'] as String? ??
+        Platform.environment['USER'] ??
+        Platform.environment['USERNAME'] ??
+        '',
+    userName: mysqlConfig['username'] as String? ?? '',
+    password: mysqlConfig['password'] as String? ?? '',
+    secure: mysqlConfig['use_ssl'] as bool? ?? false,
+  );
 
   await connection.connect(timeoutMs: 10000);
   return connection;

@@ -24,9 +24,10 @@ void main(List<String> args) async {
 
   // MySQL database
   var connection = await connectToMysql(configuration);
-  var migrationRunner = MySqlMigrationRunner(connection, migrations: [
-    GreetingMigration(),
-  ]);
+  var migrationRunner = MySqlMigrationRunner(
+    connection,
+    migrations: [GreetingMigration()],
+  );
 
   /*
   // MariaDB database

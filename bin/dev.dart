@@ -17,12 +17,10 @@ void main() async {
     var app = Angel(logger: logger, reflector: MirrorsReflector());
     await app.configure(configureServer);
     return app;
-  }, [
-    Directory('config'),
-    Directory('lib'),
-  ]);
+  }, [Directory('config'), Directory('lib')]);
 
   var server = await hot.startServer('127.0.0.1', 3000);
   print(
-      '[angel] server listening at http://${server.address.address}:${server.port}');
+    '[angel] server listening at http://${server.address.address}:${server.port}',
+  );
 }
