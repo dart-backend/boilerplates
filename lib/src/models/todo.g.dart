@@ -8,13 +8,7 @@ part of 'todo.dart';
 
 @generatedSerializable
 class Todo extends _Todo {
-  Todo({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.text,
-    this.isComplete,
-  });
+  Todo({this.id, this.createdAt, this.updatedAt, this.text, this.isComplete});
 
   /// A unique identifier corresponding to this item.
   @override
@@ -42,11 +36,12 @@ class Todo extends _Todo {
     bool? isComplete,
   }) {
     return Todo(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        text: text ?? this.text,
-        isComplete: isComplete ?? this.isComplete);
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      text: text ?? this.text,
+      isComplete: isComplete ?? this.isComplete,
+    );
   }
 
   @override
@@ -61,13 +56,7 @@ class Todo extends _Todo {
 
   @override
   int get hashCode {
-    return hashObjects([
-      id,
-      createdAt,
-      updatedAt,
-      text,
-      isComplete,
-    ]);
+    return hashObjects([id, createdAt, updatedAt, text, isComplete]);
   }
 
   @override
@@ -111,19 +100,20 @@ class TodoSerializer extends Codec<Todo, Map> {
 
   static Todo fromMap(Map map) {
     return Todo(
-        id: map['id'] as String?,
-        createdAt: map['created_at'] != null
-            ? (map['created_at'] is DateTime
+      id: map['id'] as String?,
+      createdAt: map['created_at'] != null
+          ? (map['created_at'] is DateTime
                 ? (map['created_at'] as DateTime)
                 : DateTime.parse(map['created_at'].toString()))
-            : null,
-        updatedAt: map['updated_at'] != null
-            ? (map['updated_at'] is DateTime
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? (map['updated_at'] is DateTime
                 ? (map['updated_at'] as DateTime)
                 : DateTime.parse(map['updated_at'].toString()))
-            : null,
-        text: map['text'] as String?,
-        isComplete: map['is_complete'] as bool?);
+          : null,
+      text: map['text'] as String?,
+      isComplete: map['is_complete'] as bool?,
+    );
   }
 
   static Map<String, dynamic> toMap(_Todo? model) {
@@ -135,7 +125,7 @@ class TodoSerializer extends Codec<Todo, Map> {
       'created_at': model.createdAt?.toIso8601String(),
       'updated_at': model.updatedAt?.toIso8601String(),
       'text': model.text,
-      'is_complete': model.isComplete
+      'is_complete': model.isComplete,
     };
   }
 }
@@ -170,33 +160,12 @@ final GraphQLObjectType todoGraphQLType = objectType(
   isInterface: false,
   interfaces: [],
   fields: [
-    field(
-      'id',
-      graphQLString,
-    ),
-    field(
-      'created_at',
-      graphQLDate,
-    ),
-    field(
-      'updated_at',
-      graphQLDate,
-    ),
-    field(
-      'text',
-      graphQLString,
-    ),
-    field(
-      'is_complete',
-      graphQLBoolean,
-    ),
-    field(
-      'idAsInt',
-      graphQLInt,
-    ),
-    field(
-      'idAsString',
-      graphQLString,
-    ),
+    field('id', graphQLString),
+    field('created_at', graphQLDate),
+    field('updated_at', graphQLDate),
+    field('text', graphQLString),
+    field('is_complete', graphQLBoolean),
+    field('idAsInt', graphQLInt),
+    field('idAsString', graphQLString),
   ],
 );

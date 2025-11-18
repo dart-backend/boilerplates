@@ -38,9 +38,7 @@ Iterable<GraphQLObjectField> todoQueryFields(Angel app) {
       'todo',
       todoGraphQLType,
       resolve: resolveViaServiceRead(todoService),
-      inputs: [
-        GraphQLFieldInput('id', graphQLString.nonNullable()),
-      ],
+      inputs: [GraphQLFieldInput('id', graphQLString.nonNullable())],
     ),
   ];
 }
@@ -56,9 +54,7 @@ Iterable<GraphQLObjectField> todoMutationFields(Angel app) {
       'createTodo',
       todoGraphQLType,
       resolve: resolveViaServiceCreate(todoService),
-      inputs: [
-        GraphQLFieldInput('data', todoInputType.nonNullable()),
-      ],
+      inputs: [GraphQLFieldInput('data', todoInputType.nonNullable())],
     ),
     field(
       'modifyTodo',
