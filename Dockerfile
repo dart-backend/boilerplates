@@ -1,5 +1,4 @@
-FROM dart:latest
-
+FROM docker.io/dart:3.9.4
 # Copy all the source code
 COPY ./config /app/config
 COPY ./lib /app/lib
