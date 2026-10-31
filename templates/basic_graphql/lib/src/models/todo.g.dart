@@ -3,6 +3,183 @@
 part of 'todo.dart';
 
 // **************************************************************************
+// MigrationGenerator
+// **************************************************************************
+
+class TodoMigration extends Migration {
+  @override
+  void up(Schema schema) {
+    schema.create('todos', (table) {
+      table.serial('id').primaryKey();
+      table.timeStamp('created_at');
+      table.timeStamp('updated_at');
+      table.varChar('text', length: 255);
+      table.boolean('is_complete');
+    });
+  }
+
+  @override
+  void down(Schema schema) {
+    schema.drop('todos');
+  }
+}
+
+// **************************************************************************
+// OrmGenerator
+// **************************************************************************
+
+class TodoQuery extends Query<Todo, TodoQueryWhere> {
+  TodoQuery({super.parent, Set<String>? trampoline}) {
+    trampoline ??= <String>{};
+    trampoline.add(tableName);
+    _where = TodoQueryWhere(this);
+  }
+
+  @override
+  final TodoQueryValues values = TodoQueryValues();
+
+  List<String> _selectedFields = [];
+
+  TodoQueryWhere? _where;
+
+  @override
+  Map<String, String> get casts {
+    return {};
+  }
+
+  @override
+  String get tableName {
+    return 'todos';
+  }
+
+  @override
+  List<String> get fields {
+    const localFields = [
+      'id',
+      'created_at',
+      'updated_at',
+      'text',
+      'is_complete',
+    ];
+    return _selectedFields.isEmpty
+        ? localFields
+        : localFields
+              .where((field) => _selectedFields.contains(field))
+              .toList();
+  }
+
+  TodoQuery select(List<String> selectedFields) {
+    _selectedFields = selectedFields;
+    return this;
+  }
+
+  @override
+  TodoQueryWhere? get where {
+    return _where;
+  }
+
+  @override
+  TodoQueryWhere newWhereClause() {
+    return TodoQueryWhere(this);
+  }
+
+  Optional<Todo> parseRow(List row) {
+    if (row.every((x) => x == null)) {
+      return Optional.empty();
+    }
+    var model = Todo(
+      id: fields.contains('id') ? row[fields.indexOf('id')].toString() : null,
+      createdAt: fields.contains('created_at')
+          ? mapToNullableDateTime(row[fields.indexOf('created_at')])
+          : null,
+      updatedAt: fields.contains('updated_at')
+          ? mapToNullableDateTime(row[fields.indexOf('updated_at')])
+          : null,
+      text: fields.contains('text')
+          ? (row[fields.indexOf('text')] as String?)
+          : null,
+      isComplete: fields.contains('is_complete')
+          ? mapToBool(row[fields.indexOf('is_complete')])
+          : null,
+    );
+    return Optional.of(model);
+  }
+
+  @override
+  Optional<Todo> deserialize(List row) {
+    return parseRow(row);
+  }
+}
+
+class TodoQueryWhere extends QueryWhere {
+  TodoQueryWhere(TodoQuery query)
+    : id = NumericSqlExpressionBuilder<int>(query, 'id'),
+      createdAt = DateTimeSqlExpressionBuilder(query, 'created_at'),
+      updatedAt = DateTimeSqlExpressionBuilder(query, 'updated_at'),
+      text = StringSqlExpressionBuilder(query, 'text'),
+      isComplete = BooleanSqlExpressionBuilder(query, 'is_complete');
+
+  final NumericSqlExpressionBuilder<int> id;
+
+  final DateTimeSqlExpressionBuilder createdAt;
+
+  final DateTimeSqlExpressionBuilder updatedAt;
+
+  final StringSqlExpressionBuilder text;
+
+  final BooleanSqlExpressionBuilder isComplete;
+
+  @override
+  List<SqlExpressionBuilder> get expressionBuilders {
+    return [id, createdAt, updatedAt, text, isComplete];
+  }
+}
+
+class TodoQueryValues extends MapQueryValues {
+  @override
+  Map<String, String> get casts {
+    return {};
+  }
+
+  String? get id {
+    return (values['id'] as String?);
+  }
+
+  set id(String? value) => values['id'] = value;
+
+  DateTime? get createdAt {
+    return (values['created_at'] as DateTime?);
+  }
+
+  set createdAt(DateTime? value) => values['created_at'] = value;
+
+  DateTime? get updatedAt {
+    return (values['updated_at'] as DateTime?);
+  }
+
+  set updatedAt(DateTime? value) => values['updated_at'] = value;
+
+  String? get text {
+    return (values['text'] as String?);
+  }
+
+  set text(String? value) => values['text'] = value;
+
+  bool? get isComplete {
+    return (values['is_complete'] as bool?);
+  }
+
+  set isComplete(bool? value) => values['is_complete'] = value;
+
+  void copyFrom(Todo model) {
+    createdAt = model.createdAt;
+    updatedAt = model.updatedAt;
+    text = model.text;
+    isComplete = model.isComplete;
+  }
+}
+
+// **************************************************************************
 // JsonModelGenerator
 // **************************************************************************
 
@@ -158,6 +335,7 @@ abstract class TodoFields {
 final GraphQLObjectType todoGraphQLType = objectType(
   'Todo',
   isInterface: false,
+  description: 'A to-do item, stored in the `todos` table, and served as the GraphQL type\n`Todo` (`todoGraphQLType`).',
   interfaces: [],
   fields: [
     field<dynamic, dynamic>(

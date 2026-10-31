@@ -12,12 +12,14 @@ RUN dart pub get --offline
 # The generated sources are part of the project; to rebuild them here instead:
 # RUN dart run build_runner build --delete-conflicting-outputs
 RUN dart compile exe bin/prod.dart -o bin/server
+RUN dart compile exe bin/migrate.dart -o bin/migrate
 
 # Run with only what the server needs: the Dart runtime's libraries, the
 # executable, and the files it reads.
 FROM scratch
 COPY --from=build /runtime/ /
 COPY --from=build /app/bin/server /app/bin/server
+COPY --from=build /app/bin/migrate /app/bin/migrate
 COPY --from=build /app/config /app/config
 COPY --from=build /app/views /app/views
 COPY --from=build /app/web /app/web
@@ -27,3 +29,6 @@ ENV ANGEL_ENV=production
 EXPOSE 3000
 # Use -j to set the number of isolates, as -j 4.
 CMD ["/app/bin/server", "-p", "3000", "-a", "0.0.0.0"]
+
+# Run the migrations with the image, as:
+# docker run --rm <image> /app/bin/migrate up

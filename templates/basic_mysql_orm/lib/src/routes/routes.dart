@@ -43,7 +43,12 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       } else {
         var executor = executorOf(req);
         var message = req.bodyAsMap['message'].toString();
-        var query = GreetingQuery()..values.message = message;
+        // The ORM fills in only the timestamps given in `values`, so set them.
+        var now = DateTime.now();
+        var query = GreetingQuery()
+          ..values.message = message
+          ..values.createdAt = now
+          ..values.updatedAt = now;
         var optional = await query.insert(executor);
         return optional.value;
       }

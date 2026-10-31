@@ -47,7 +47,14 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       } else {
         var executor = executorOf(req);
         var message = req.bodyAsMap['message'].toString();
-        var query = GreetingQuery()..values.message = message;
+        // The ORM fills in only the timestamps given in `values`, so set them,
+        // as UTC: the database is used at UTC (`time_zone` in config/), and its
+        // times are read back as UTC.
+        var now = DateTime.now().toUtc();
+        var query = GreetingQuery()
+          ..values.message = message
+          ..values.createdAt = now
+          ..values.updatedAt = now;
         var optional = await query.insert(executor);
         return optional.value;
       }

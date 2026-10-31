@@ -14,6 +14,8 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
     MariaDB [(none)]> GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'localhost';
    ```
 
+   If the database runs in a container, as with Docker, or on another machine, it sees the application connect from another host than `localhost`, and refuses it. Create the user for that host instead, or for any host with `'appuser'@'%'`, in both statements.
+
 4. Update the `mysql` section in the `config/default.yaml` file with the newly created user and database name. The `MYSQL_USERNAME` and `MYSQL_PASSWORD` environment variables, if set, override its `username` and `password`.
 
    ```yaml

@@ -5,14 +5,15 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
 ## Installation & Setup
 
 1. Download and install [Dart](https://dart.dev/get-dart).
-2. Install `postgresql` version 10 to 16
+2. Install PostgreSQL 14 or later.
 3. Create a new user and database in postgres using `psql` cli. For example:
 
    ```sql
-    postgres=# create database appdb;
     postgres=# create user appuser with encrypted password 'App1970#';
-    postgres=# grant all privileges on database appdb to appuser;
+    postgres=# create database appdb owner appuser;
    ```
+
+   The user owns the database, so it can create the tables of the migrations. Granting it privileges on the database is not enough: since PostgreSQL 15, only the owner of a database can create tables in its `public` schema.
 
 4. Update the `postgres` section in the `config/default.yaml` file with the newly created user and database name.
 
@@ -23,7 +24,7 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
         database_name: appdb
         username: appuser
         password: App1970#
-        useSSL: false
+        use_ssl: false
         time_zone: UTC
    ```
 
