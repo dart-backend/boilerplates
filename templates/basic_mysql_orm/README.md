@@ -1,11 +1,11 @@
 # ORM Starter Application for Angel3 framework
 
-This is an ORM starter application for [Angel3 framework](https://angel3-framework.web.app) which is a full-stack Web framework in Dart. The default database is MariaDB. MySQL support is still in active development.
+This is an ORM starter application for [Angel3 framework](https://angel3-framework.web.app) which is a full-stack Web framework in Dart. It works with MariaDB and MySQL.
 
 ## Installation & Setup
 
 1. Download and install [Dart](https://dart.dev/get-dart).
-2. Install `MariaDB` 10.2.x or later
+2. Install MariaDB 10.2 or later, or MySQL 8 or later.
 3. Create a new user and database using MySQL Client. For example:
 
    ```sql
@@ -14,10 +14,10 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
     MariaDB [(none)]> GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'localhost';
    ```
 
-4. Update the `mariadb` section in the `config/default.yaml` file with the newly created user and database name.
+4. Update the `mysql` section in the `config/default.yaml` file with the newly created user and database name. The `MYSQL_USERNAME` and `MYSQL_PASSWORD` environment variables, if set, override its `username` and `password`.
 
    ```yaml
-    mariadb:
+    mysql:
         host: localhost
         port: 3306
         database_name: appdb
@@ -67,7 +67,23 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
     dart bin/prod.dart
     ```
 
-2. Run as docker. Edit and run the provided `Dockerfile` to build the image.
+    Or compile it to a native executable, which needs no Dart SDK to run:
+
+    ```bash
+    dart compile exe bin/prod.dart -o server
+    ANGEL_ENV=production ./server
+    ```
+
+    Run either from the project directory, as the server reads `config/`, `views/` and `web/` from there; to deploy the executable, copy those directories with it. Set `ANGEL_ENV=production` to use the production configuration.
+
+2. Or run it with Docker. The `Dockerfile` builds the native executable, and runs it in a minimal image:
+
+    ```bash
+    docker build -t starter_app .
+    docker run -p 3000:3000 starter_app
+    ```
+
+    Run the migrations with the same image, as `docker run --rm starter_app /app/bin/migrate up`. In a container, `localhost` is the container itself, so set the database `host` in `config/` to one the container can reach.
 
 ### Building ORM Model
 

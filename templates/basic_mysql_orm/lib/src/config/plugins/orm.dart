@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_orm/angel3_orm.dart';
 import 'package:angel3_orm_mysql/angel3_orm_mysql.dart';
-import 'package:mysql_client/mysql_client.dart';
+import 'package:mysql_dart/mysql_dart.dart';
 
 // For MariaDb
 Future<void> configureServer(Angel app) async {
@@ -20,9 +20,21 @@ Future<void> configureServer(Angel app) async {
   }
 }
 
-// MariaDB connection
+// MariaDB or MySQL connection, of the `mysql` section of the configuration.
+// The MYSQL_USERNAME and MYSQL_PASSWORD environment variables override its
+// `username` and `password`, so they need not be kept in a file.
 Future<MySQLConnection> connectToMySQL(Map configuration) async {
   var mysqlDbConfig = configuration['mysql'] as Map? ?? {};
+
+  var userName =
+      Platform.environment['MYSQL_USERNAME'] ??
+      mysqlDbConfig['username'] as String?;
+  if (userName == null) {
+    throw StateError(
+      'No MySQL user: set `mysql.username` in config/default.yaml, or the '
+      'MYSQL_USERNAME environment variable.',
+    );
+  }
 
   var connection = await MySQLConnection.createConnection(
     databaseName:
@@ -32,13 +44,16 @@ Future<MySQLConnection> connectToMySQL(Map configuration) async {
         '',
     port: mysqlDbConfig['port'] as int? ?? 3306,
     host: mysqlDbConfig['host'] as String? ?? 'localhost',
-    userName: Platform.environment['MYSQL_USERNAME'] ?? 'test',
-    password: Platform.environment['MYSQL_PASSWORD'] ?? 'Test123',
+    userName: userName,
+    password:
+        Platform.environment['MYSQL_PASSWORD'] ??
+        mysqlDbConfig['password'] as String? ??
+        '',
     secure: mysqlDbConfig['use_ssl'] as bool? ?? false,
   );
 
-  var timeout = mysqlDbConfig['timeout_in_seconds'] as int? ?? 30000;
-  await connection.connect(timeoutMs: timeout);
+  var timeoutInSeconds = mysqlDbConfig['timeout_in_seconds'] as int? ?? 30;
+  await connection.connect(timeoutMs: timeoutInSeconds * 1000);
 
   return connection;
 }

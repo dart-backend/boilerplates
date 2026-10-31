@@ -25,7 +25,21 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
     dart bin/prod.dart
     ```
 
-2. Run as docker. Edit and run the provided `Dockerfile` to build the image.
+    Or compile it to a native executable, which needs no Dart SDK to run:
+
+    ```bash
+    dart compile exe bin/prod.dart -o server
+    ANGEL_ENV=production ./server
+    ```
+
+    Run either from the project directory, as the server reads `config/`, `views/` and `web/` from there; to deploy the executable, copy those directories with it. Set `ANGEL_ENV=production` to use the production configuration.
+
+2. Or run it with Docker. The `Dockerfile` builds the native executable, and runs it in a minimal image:
+
+    ```bash
+    docker build -t starter_app .
+    docker run -p 3000:3000 starter_app
+    ```
 
 ## Resources
 
