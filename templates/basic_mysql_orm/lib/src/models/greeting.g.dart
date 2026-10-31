@@ -81,14 +81,16 @@ class GreetingQuery extends Query<Greeting, GreetingQueryWhere> {
       return Optional.empty();
     }
     var model = Greeting(
-      id: fields.contains('id') ? row[0].toString() : null,
+      id: fields.contains('id') ? row[fields.indexOf('id')].toString() : null,
       createdAt: fields.contains('created_at')
-          ? mapToNullableDateTime(row[1])
+          ? mapToNullableDateTime(row[fields.indexOf('created_at')])
           : null,
       updatedAt: fields.contains('updated_at')
-          ? mapToNullableDateTime(row[2])
+          ? mapToNullableDateTime(row[fields.indexOf('updated_at')])
           : null,
-      message: fields.contains('message') ? (row[3] as String?) : null,
+      message: fields.contains('message')
+          ? (row[fields.indexOf('message')] as String?)
+          : null,
     );
     return Optional.of(model);
   }
@@ -205,7 +207,7 @@ class Greeting extends _Greeting {
 
   @override
   int get hashCode {
-    return hashObjects([id, createdAt, updatedAt, message]);
+    return Object.hashAll([id, createdAt, updatedAt, message]);
   }
 
   @override

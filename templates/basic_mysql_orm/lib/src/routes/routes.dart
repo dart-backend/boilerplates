@@ -6,6 +6,20 @@ import 'package:file/file.dart';
 import 'controllers/controllers.dart' as controllers;
 import '../models/greeting.dart';
 
+/// The ORM's executor, registered by `config/plugins/orm.dart`; a `503 Service
+/// Unavailable` if the server could not connect to the database when it
+/// started.
+QueryExecutor executorOf(RequestContext req) {
+  var container = req.container!;
+  if (!container.has<QueryExecutor>()) {
+    throw AngelHttpException(
+      statusCode: 503,
+      message: 'The database is not available.',
+    );
+  }
+  return container.make<QueryExecutor>();
+}
+
 /// Put your app routes here!
 AngelConfigurer configureServer(FileSystem fileSystem) {
   return (Angel app) async {
@@ -16,7 +30,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.get('/', (req, res) => res.render('hello'));
 
     app.get('/greetings', (req, res) {
-      var executor = req.container!.make<QueryExecutor>();
+      var executor = executorOf(req);
       var query = GreetingQuery();
       return query.get(executor);
     });
@@ -27,9 +41,14 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
       if (!req.bodyAsMap.containsKey('message')) {
         throw AngelHttpException.badRequest(message: 'Missing "message".');
       } else {
-        var executor = req.container!.make<QueryExecutor>();
+        var executor = executorOf(req);
         var message = req.bodyAsMap['message'].toString();
-        var query = GreetingQuery()..values.message = message;
+        // The ORM fills in only the timestamps given in `values`, so set them.
+        var now = DateTime.now();
+        var query = GreetingQuery()
+          ..values.message = message
+          ..values.createdAt = now
+          ..values.updatedAt = now;
         var optional = await query.insert(executor);
         return optional.value;
       }
@@ -37,7 +56,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
 
     app.get('/greetings/:message', (req, res) {
       var message = req.params['message'] as String;
-      var executor = req.container!.make<QueryExecutor>();
+      var executor = executorOf(req);
       var query = GreetingQuery()..where!.message.equals(message);
       return query.get(executor);
     });

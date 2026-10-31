@@ -1,24 +1,34 @@
-FROM dart:latest
+# Builds a native executable of the server, then runs it in a minimal image.
 
-# Copy all the source code
-COPY ./config /app/config
-COPY ./lib /app/lib
-COPY ./bin /app/bin
-COPY ./views /app/views
-COPY ./web /app/web
-COPY ./*.yaml /app/
+# Compile with the Dart SDK.
+FROM dart:stable AS build
 
 WORKDIR /app
-RUN dart pub upgrade
+COPY pubspec.* ./
+RUN dart pub get
 
-# Optionally build generated sources.
-# RUN pub run build_runner build
+COPY . .
+RUN dart pub get --offline
+# The generated sources are part of the project; to rebuild them here instead:
+# RUN dart run build_runner build --delete-conflicting-outputs
+RUN dart compile exe bin/prod.dart -o bin/server
+RUN dart compile exe bin/migrate.dart -o bin/migrate
 
-# Set environment, start server in JIT mode
+# Run with only what the server needs: the Dart runtime's libraries, the
+# executable, and the files it reads.
+FROM scratch
+COPY --from=build /runtime/ /
+COPY --from=build /app/bin/server /app/bin/server
+COPY --from=build /app/bin/migrate /app/bin/migrate
+COPY --from=build /app/config /app/config
+COPY --from=build /app/views /app/views
+COPY --from=build /app/web /app/web
+
+WORKDIR /app
 ENV ANGEL_ENV=production
 EXPOSE 3000
-CMD dart ./bin/prod.dart -p 3000 -a 0.0.0.0
+# Use -j to set the number of isolates, as -j 4.
+CMD ["/app/bin/server", "-p", "3000", "-a", "0.0.0.0"]
 
-# Use -j flag to set higher number of isolates
-#CMD dart ./bin/prod.dart -p 3000 -a 0.0.0.0 -j 50
-
+# Run the migrations with the image, as:
+# docker run --rm <image> /app/bin/migrate up

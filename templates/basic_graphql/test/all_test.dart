@@ -1,6 +1,9 @@
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_test/angel3_test.dart';
+import 'package:graphql_schema2/graphql_schema2.dart';
+import 'package:graphql_server2/graphql_server2.dart';
 import 'package:starter_app/starter_app.dart';
+import 'package:starter_app/src/routes/graphql/schema.dart' show createSchema;
 import 'package:test/test.dart';
 
 // Angel also includes facilities to make testing easier.
@@ -39,5 +42,21 @@ void main() async {
 
     // Expect a 200 response.
     expect(response, hasStatus(200));
+  });
+
+  test('without a database, a query is an error that says so', () async {
+    // An application without the ORM's executor, as when the server could
+    // not connect to the database.
+    var graphQL = GraphQL(createSchema(Angel()));
+    expect(
+      graphQL.parseAndExecute('{ todos { id } }'),
+      throwsA(
+        isA<GraphQLException>().having(
+          (e) => e.errors.single.message,
+          'message',
+          'The database is not available.',
+        ),
+      ),
+    );
   });
 }
