@@ -27,9 +27,12 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
         password: App1970#
         use_ssl: false
         allow_public_key_retrieval: true
+        verify_server_certificate: true
    ```
 
    `database_name` is required. On MySQL 8, a user logs in with `caching_sha2_password` by default, which, without TLS, needs the server's public key: `allow_public_key_retrieval: true` fetches it from the server. On an untrusted network, set it to `false`, and either enable TLS with `use_ssl: true` or give the key's PEM as `server_public_key`.
+
+   With `use_ssl: true`, the server's TLS certificate is verified: it must chain to a trusted root and name `host`. A server in Docker or on the same host has the self-signed certificate that MySQL and MariaDB generate, so set `verify_server_certificate: false` for it; the traffic is still encrypted.
 
 5. Run the migration to generate `migrations` and `greetings` tables in the database.
 

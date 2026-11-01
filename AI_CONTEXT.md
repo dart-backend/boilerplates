@@ -17,7 +17,7 @@ Starter application templates for the [Angel3 framework](https://angel3-framewor
 |---|---|---|---|
 | `templates/basic` | Basic | none | none |
 | `templates/basic_postgres_orm` | ORM for PostgreSQL | PostgreSQL (`postgres` ^3.5) | `angel3_serialize_generator`, `angel3_orm_generator` |
-| `templates/basic_mysql_orm` | ORM for MySQL/MariaDB | MySQL/MariaDB (`mysql_dart` ^3.0) | `angel3_serialize_generator`, `angel3_orm_generator` |
+| `templates/basic_mysql_orm` | ORM for MySQL/MariaDB | MySQL/MariaDB (`mysql_dart` ^4.0) | `angel3_serialize_generator`, `angel3_orm_generator` |
 | `templates/basic_graphql` | GraphQL | PostgreSQL | as above, plus `graphql_generator2` |
 
 The mapping from menu entry to folder lives in angel3-cli (`lib/src/commands/init.dart`, the `BoilerplateInfo` constants with `subfolderPath` and `ref: 'master'`). **Renaming or moving a template folder breaks `angel3 init`** until the CLI is updated and released.
