@@ -1,0 +1,86 @@
+# Runs this application and its RethinkDB database in containers with Podman.
+# From the project's root:
+#
+#   podman-compose -f contrib/deployment/compose.yaml up --build -d
+#
+# Then open http://localhost:3000. See README.md in this folder.
+name: angel3-app
+
+# The password of RethinkDB's `admin` user. Set it in the environment, or in a
+# `.env` file next to this one, to use another.
+x-database-env: &database-env
+  RETHINKDB_USERNAME: admin
+  RETHINKDB_PASSWORD: ${DB_PASSWORD:-App1970#}
+
+services:
+  db:
+    image: docker.io/library/rethinkdb:2.4
+    # `--initial-password` sets the password of `admin` on the first start
+    # only, when the data volume is empty.
+    command:
+      - rethinkdb
+      - --bind
+      - all
+      - --initial-password
+      - ${DB_PASSWORD:-App1970#}
+    volumes:
+      - db-data:/data
+    # RethinkDB's web UI answers once the server is up.
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "-o", "/dev/null", "http://localhost:8080/"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    # To open the web UI at http://localhost:8080, publish it:
+    # ports:
+    #   - "127.0.0.1:8080:8080"
+    restart: unless-stopped
+
+  # Creates the database and the tables with `bin/migrate up`, then exits. It
+  # builds the image, which `app` runs too.
+  migrate:
+    # The project's Containerfile compiles native executables of the server and
+    # of `bin/migrate.dart`, and runs them in a `scratch` image.
+    build:
+      context: ../..
+      dockerfile: Containerfile
+    image: localhost/angel3-app:latest
+    command: ["/app/bin/migrate", "up"]
+    environment:
+      <<: *database-env
+      ANGEL_ENV: production
+      RETHINKDB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+  app:
+    # The server, at ANGEL_ENV=production, of the image `migrate` builds. It
+    # serves the pages and the files of `web/`, which the image includes.
+    image: localhost/angel3-app:latest
+    environment:
+      <<: *database-env
+      ANGEL_ENV: production
+      RETHINKDB_HOST: db
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      # Published on the host's loopback only; use "3000:3000" to expose it on
+      # every interface, or put a reverse proxy in front.
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    restart: unless-stopped
+    # The server only needs to listen and write logs.
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  db-data:

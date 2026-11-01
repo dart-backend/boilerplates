@@ -10,12 +10,15 @@ This repository contains the starter application templates for [Angel3 framework
 | [`basic_postgres_orm`](templates/basic_postgres_orm) | ORM for PostgreSQL | PostgreSQL | The basic application, with the Angel3 ORM and migrations |
 | [`basic_mysql_orm`](templates/basic_mysql_orm) | ORM for MySQL/MariaDB | MySQL or MariaDB | The basic application, with the Angel3 ORM and migrations |
 | [`basic_graphql`](templates/basic_graphql) | GraphQL | PostgreSQL | A to-do list served over GraphQL, stored with the Angel3 ORM |
+| [`basic_mongo`](templates/basic_mongo) | MongoDB | MongoDB | The basic application, with a REST API of a MongoDB collection (`angel3_mongo`) |
+| [`basic_rethinkdb`](templates/basic_rethinkdb) | RethinkDB | RethinkDB | The basic application, with a REST and WebSocket API of a RethinkDB table, which pushes its changefeed to clients (`angel3_rethinkdb`, `angel3_websocket`) |
+| [`basic_sembast`](templates/basic_sembast) | Sembast | Sembast (embedded) | The basic application, with a REST API of a store in Sembast, a database in one file that needs no server (`angel3_sembast`) |
 
 Each template is a Dart package that runs on its own, and includes:
 
 * a hot-reloading development server (`bin/dev.dart`) and a production server (`bin/prod.dart`) that compiles with `dart compile exe`
 * a `Containerfile`, to build and run the server with [Podman](https://podman.io/)
-* a Podman Compose file in `contrib/deployment`, which also runs the database and its migrations in the ORM and GraphQL templates
+* a Podman Compose file in `contrib/deployment`, which also runs the database in the ORM, GraphQL, MongoDB and RethinkDB templates, and the migrations in the ORM, GraphQL and RethinkDB ones
 * tests that run without a database
 
 ## Getting started
@@ -34,7 +37,7 @@ Each template is a Dart package that runs on its own, and includes:
 
     `angel3 init` downloads the templates from this repository's `master` branch, names the project `my_app`, generates its JWT secrets, and runs `dart pub get`.
 
-3. Follow the `README.md` of the new project, which is the template's: [basic](templates/basic/README.md), [ORM for PostgreSQL](templates/basic_postgres_orm/README.md), [ORM for MySQL/MariaDB](templates/basic_mysql_orm/README.md) or [GraphQL](templates/basic_graphql/README.md).
+3. Follow the `README.md` of the new project, which is the template's: [basic](templates/basic/README.md), [ORM for PostgreSQL](templates/basic_postgres_orm/README.md), [ORM for MySQL/MariaDB](templates/basic_mysql_orm/README.md), [GraphQL](templates/basic_graphql/README.md), [MongoDB](templates/basic_mongo/README.md), [RethinkDB](templates/basic_rethinkdb/README.md) or [Sembast](templates/basic_sembast/README.md).
 
 To try a template without the CLI, run it from its folder in a clone of this repository, as its README describes. For example, with Podman:
 
@@ -47,7 +50,7 @@ Stop it with `podman-compose -f contrib/deployment/compose.yaml down`, adding `-
 
 ## Security
 
-The templates' `config/default.yaml` and `config/production.yaml` contain `jwt_secret: INSECURE_DEFAULT_SECRET`, and the ORM and GraphQL templates contain a sample database user and password (`appuser` / `App1970#`). They are placeholders for local development:
+The templates' `config/default.yaml` and `config/production.yaml` contain `jwt_secret: INSECURE_DEFAULT_SECRET`, and the ORM and GraphQL templates contain a sample database user and password (`appuser` / `App1970#`; `App1970` in the MongoDB template). They are placeholders for local development:
 
 * `angel3 init` replaces the JWT secrets with random ones. In a template run from this repository, replace them before deploying; `angel3 key` generates new ones.
 * Change the database's password before deploying, and keep the secrets out of public repositories.

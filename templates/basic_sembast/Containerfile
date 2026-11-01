@@ -1,0 +1,36 @@
+# Builds a native executable of the server, then runs it in a minimal image.
+# Build and run it with Podman; see README.md.
+
+# Compile with the Dart SDK.
+FROM docker.io/library/dart:stable AS build
+
+WORKDIR /app
+COPY pubspec.* ./
+RUN dart pub get
+
+COPY . .
+RUN dart pub get --offline
+# The generated sources are part of the project; to rebuild them here instead:
+# RUN dart run build_runner build --delete-conflicting-outputs
+RUN dart compile exe bin/prod.dart -o bin/server
+# The directory of the database, which `scratch` cannot create.
+RUN mkdir -p /app/data
+
+# Run with only what the server needs: the Dart runtime's libraries, the
+# executable, and the files it reads.
+FROM scratch
+COPY --from=build /runtime/ /
+COPY --from=build /app/bin/server /app/bin/server
+COPY --from=build /app/config /app/config
+COPY --from=build /app/views /app/views
+COPY --from=build /app/web /app/web
+COPY --from=build /app/data /app/data
+
+WORKDIR /app
+ENV ANGEL_ENV=production
+# Mount a volume here, so that the data outlives the container.
+ENV SEMBAST_PATH=/app/data/app.db
+VOLUME /app/data
+EXPOSE 3000
+# One isolate, as only one may open the Sembast database (see bin/prod.dart).
+CMD ["/app/bin/server", "-p", "3000", "-a", "0.0.0.0"]

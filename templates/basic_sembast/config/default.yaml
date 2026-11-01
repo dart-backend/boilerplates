@@ -1,0 +1,11 @@
+# Default server configuration.
+# The JWT secret signs the app's tokens. If it is still INSECURE_DEFAULT_SECRET,
+# replace it with a random one before deploying (`angel3 key` generates new
+# ones), and keep it out of public repositories.
+jwt_secret: INSECURE_DEFAULT_SECRET
+host: 127.0.0.1
+port: 3000
+sembast:
+  # The database file, relative to the directory the server runs in. The
+  # SEMBAST_PATH environment variable, if set, overrides it.
+  path: data/app.db

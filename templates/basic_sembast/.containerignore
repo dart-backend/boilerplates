@@ -1,0 +1,14 @@
+.dart_tool
+.idea
+.vscode
+.metals
+.git
+.github
+.packages
+logs/
+test/
+build/
+pubspec.lock
+contrib/
+
+data/
