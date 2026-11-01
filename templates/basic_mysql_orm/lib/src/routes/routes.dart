@@ -21,6 +21,10 @@ QueryExecutor executorOf(RequestContext req) {
 }
 
 /// Put your app routes here!
+///
+/// See the wiki for information about routing, requests, and responses:
+/// * https://angel3-docs.dukefirehawk.com/guides/basic-routing
+/// * https://angel3-docs.dukefirehawk.com/guides/requests-and-responses
 AngelConfigurer configureServer(FileSystem fileSystem) {
   return (Angel app) async {
     // Typically, you want to mount controllers first, after any global middleware.
@@ -38,20 +42,47 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.post('/greetings', (req, res) async {
       await req.parseBody();
 
-      if (!req.bodyAsMap.containsKey('message')) {
+      // `message` is a `varChar(255)` column, so reject anything else here
+      // with a 400, rather than storing it as text or failing in the database.
+      var message = req.bodyAsMap['message'];
+      if (message == null) {
         throw AngelHttpException.badRequest(message: 'Missing "message".');
-      } else {
-        var executor = executorOf(req);
-        var message = req.bodyAsMap['message'].toString();
-        // The ORM fills in only the timestamps given in `values`, so set them.
-        var now = DateTime.now();
-        var query = GreetingQuery()
-          ..values.message = message
-          ..values.createdAt = now
-          ..values.updatedAt = now;
-        var optional = await query.insert(executor);
-        return optional.value;
       }
+      if (message is! String) {
+        throw AngelHttpException.badRequest(
+          message: '"message" must be a string.',
+        );
+      }
+      message = message.trim();
+      if (message.isEmpty) {
+        throw AngelHttpException.badRequest(message: '"message" is blank.');
+      }
+      // 255 characters, as of the column; `runes` counts characters as the
+      // database does, where `length` counts UTF-16 code units.
+      if (message.runes.length > 255) {
+        throw AngelHttpException.badRequest(
+          message: '"message" is longer than 255 characters.',
+        );
+      }
+      // PostgreSQL cannot store a NUL character in text; it is rejected here
+      // too, so the two ORM templates accept the same messages.
+      if (message.contains('\u0000')) {
+        throw AngelHttpException.badRequest(
+          message: '"message" contains a NUL character.',
+        );
+      }
+
+      var executor = executorOf(req);
+      // The ORM fills in only the timestamps given in `values`, so set them,
+      // as UTC: `MariaDbExecutor` (`config/plugins/orm.dart`) stores them as
+      // UTC, and reads them back as UTC.
+      var now = DateTime.now().toUtc();
+      var query = GreetingQuery()
+        ..values.message = message
+        ..values.createdAt = now
+        ..values.updatedAt = now;
+      var optional = await query.insert(executor);
+      return optional.value;
     });
 
     app.get('/greetings/:message', (req, res) {
@@ -66,6 +97,10 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     //
     // In production, however, prefer serving static files through NGINX or a
     // similar reverse proxy.
+    //
+    // Read the following two sources for documentation:
+    // * https://medium.com/the-angel-framework/serving-static-files-with-the-angel-framework-2ddc7a2b84ae
+    // * https://pub.dev/packages/angel3_static
     if (!app.environment.isProduction) {
       var vDir = VirtualDirectory(
         app,
@@ -79,10 +114,14 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.fallback((req, res) => throw AngelHttpException.notFound());
 
     // Set our application up to handle different errors.
+    //
+    // Read the following for documentation:
+    // * https://angel3-docs.dukefirehawk.com/guides/error-handling
+
     var oldErrorHandler = app.errorHandler;
     app.errorHandler = (e, req, res) async {
       if (req.accepts('text/html', strict: true)) {
-        if (e.statusCode == 404 && req.accepts('text/html', strict: true)) {
+        if (e.statusCode == 404) {
           await res.render('error', {
             'message': 'No file exists at ${req.uri}.',
           });

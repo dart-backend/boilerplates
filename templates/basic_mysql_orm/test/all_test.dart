@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_test/angel3_test.dart';
 import 'package:starter_app/starter_app.dart';
@@ -32,6 +34,26 @@ void main() async {
 
     // Expect a 200 response.
     expect(response, hasStatus(200));
+  });
+
+  test('an invalid greeting is a 400', () async {
+    // The message is checked before the database is used, so these need no
+    // database.
+    for (var body in <Map<String, dynamic>>[
+      {},
+      {'message': null},
+      {'message': 42},
+      {'message': '   '},
+      {'message': 'a' * 256},
+      {'message': 'hi\u0000there'},
+    ]) {
+      var response = await client.post(
+        Uri.parse('/greetings'),
+        headers: {'content-type': 'application/json'},
+        body: jsonEncode(body),
+      );
+      expect(response, hasStatus(400), reason: '$body');
+    }
   });
 
   test('without a database, the ORM routes are 503', () async {

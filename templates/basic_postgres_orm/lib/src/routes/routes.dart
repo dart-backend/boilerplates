@@ -42,22 +42,46 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     app.post('/greetings', (req, res) async {
       await req.parseBody();
 
-      if (!req.bodyAsMap.containsKey('message')) {
+      // `message` is a `varChar(255)` column, so reject anything else here
+      // with a 400, rather than storing it as text or failing in the database.
+      var message = req.bodyAsMap['message'];
+      if (message == null) {
         throw AngelHttpException.badRequest(message: 'Missing "message".');
-      } else {
-        var executor = executorOf(req);
-        var message = req.bodyAsMap['message'].toString();
-        // The ORM fills in only the timestamps given in `values`, so set them,
-        // as UTC: the database is used at UTC (`time_zone` in config/), and its
-        // times are read back as UTC.
-        var now = DateTime.now().toUtc();
-        var query = GreetingQuery()
-          ..values.message = message
-          ..values.createdAt = now
-          ..values.updatedAt = now;
-        var optional = await query.insert(executor);
-        return optional.value;
       }
+      if (message is! String) {
+        throw AngelHttpException.badRequest(
+          message: '"message" must be a string.',
+        );
+      }
+      message = message.trim();
+      if (message.isEmpty) {
+        throw AngelHttpException.badRequest(message: '"message" is blank.');
+      }
+      // 255 characters, as of the column; `runes` counts characters as the
+      // database does, where `length` counts UTF-16 code units.
+      if (message.runes.length > 255) {
+        throw AngelHttpException.badRequest(
+          message: '"message" is longer than 255 characters.',
+        );
+      }
+      // PostgreSQL cannot store a NUL character in text.
+      if (message.contains('\u0000')) {
+        throw AngelHttpException.badRequest(
+          message: '"message" contains a NUL character.',
+        );
+      }
+
+      var executor = executorOf(req);
+      // The ORM fills in only the timestamps given in `values`, so set them,
+      // as UTC: the database is used at UTC (`time_zone` in config/), and its
+      // times are read back as UTC.
+      var now = DateTime.now().toUtc();
+      var query = GreetingQuery()
+        ..values.message = message
+        ..values.createdAt = now
+        ..values.updatedAt = now;
+      var optional = await query.insert(executor);
+      return optional.value;
     });
 
     app.get('/greetings/:message', (req, res) {
@@ -96,7 +120,7 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     var oldErrorHandler = app.errorHandler;
     app.errorHandler = (e, req, res) async {
       if (req.accepts('text/html', strict: true)) {
-        if (e.statusCode == 404 && req.accepts('text/html', strict: true)) {
+        if (e.statusCode == 404) {
           await res.render('error', {
             'message': 'No file exists at ${req.uri}.',
           });
