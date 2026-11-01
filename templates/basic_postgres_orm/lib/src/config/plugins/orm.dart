@@ -20,21 +20,32 @@ Future<void> configureServer(Angel app) async {
   }
 }
 
+// PostgreSQL connection, of the `postgres` section of the configuration. The
+// POSTGRES_HOST, POSTGRES_USERNAME and POSTGRES_PASSWORD environment variables
+// override its `host`, `username` and `password`, as in a container, so they
+// need not be kept in a file.
 Future<Connection> connectToPostgres(Map configuration) async {
   var postgresConfig = configuration['postgres'] as Map? ?? {};
 
   var useSsl = postgresConfig['use_ssl'] as bool? ?? false;
   final connection = await Connection.open(
     Endpoint(
-      host: postgresConfig['host'] as String? ?? 'localhost',
+      host:
+          Platform.environment['POSTGRES_HOST'] ??
+          postgresConfig['host'] as String? ??
+          'localhost',
       port: postgresConfig['port'] as int? ?? 5432,
       database:
           postgresConfig['database_name'] as String? ??
           Platform.environment['USER'] ??
           Platform.environment['USERNAME'] ??
           '',
-      username: postgresConfig['username'] as String?,
-      password: postgresConfig['password'] as String?,
+      username:
+          Platform.environment['POSTGRES_USERNAME'] ??
+          postgresConfig['username'] as String?,
+      password:
+          Platform.environment['POSTGRES_PASSWORD'] ??
+          postgresConfig['password'] as String?,
     ),
     settings: ConnectionSettings(
       sslMode: useSsl ? SslMode.require : SslMode.disable,

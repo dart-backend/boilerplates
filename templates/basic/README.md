@@ -19,6 +19,8 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
 
 ### Production
 
+Before deploying, check the `jwt_secret` in `config/default.yaml` and `config/production.yaml`: it signs the app's tokens. If it is still `INSECURE_DEFAULT_SECRET`, replace it with a random one (`angel3 key` generates new ones). `angel3 init` already does this for a new project. Keep the secrets out of public repositories, as anyone who knows one can sign tokens the app accepts.
+
 1. Run the following command:
 
     ```bash
@@ -34,12 +36,24 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
 
     Run either from the project directory, as the server reads `config/`, `views/` and `web/` from there; to deploy the executable, copy those directories with it. Set `ANGEL_ENV=production` to use the production configuration.
 
-2. Or run it with Docker. The `Dockerfile` builds the native executable, and runs it in a minimal image:
+2. Or run it with [Podman](https://podman.io/). The `Containerfile` builds the native executable, and runs it in a minimal image:
 
     ```bash
-    docker build -t starter_app .
-    docker run -p 3000:3000 starter_app
+    podman build -t starter_app .
+    podman run --rm -p 3000:3000 starter_app
     ```
+
+3. Or run it with Podman Compose, which builds the same image and runs it with a read-only filesystem and no Linux capabilities:
+
+    ```bash
+    # Build the image and start the server in the background
+    podman-compose -f contrib/deployment/compose.yaml up --build -d
+
+    # Stop and remove the container
+    podman-compose -f contrib/deployment/compose.yaml down
+    ```
+
+    See [contrib/deployment/README.md](contrib/deployment/README.md).
 
 ## Resources
 

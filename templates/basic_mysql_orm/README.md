@@ -14,9 +14,9 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
     MariaDB [(none)]> GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'localhost';
    ```
 
-   If the database runs in a container, as with Docker, or on another machine, it sees the application connect from another host than `localhost`, and refuses it. Create the user for that host instead, or for any host with `'appuser'@'%'`, in both statements.
+   If the database runs in a container, as with Podman, or on another machine, it sees the application connect from another host than `localhost`, and refuses it. Create the user for that host instead, or for any host with `'appuser'@'%'`, in both statements.
 
-4. Update the `mysql` section in the `config/default.yaml` file with the newly created user and database name. The `MYSQL_USERNAME` and `MYSQL_PASSWORD` environment variables, if set, override its `username` and `password`.
+4. Update the `mysql` section in the `config/default.yaml` file with the newly created user and database name. The `MYSQL_HOST`, `MYSQL_USERNAME` and `MYSQL_PASSWORD` environment variables, if set, override its `host`, `username` and `password`.
 
    ```yaml
     mysql:
@@ -32,7 +32,7 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 
    `database_name` is required. On MySQL 8, a user logs in with `caching_sha2_password` by default, which, without TLS, needs the server's public key: `allow_public_key_retrieval: true` fetches it from the server. On an untrusted network, set it to `false`, and either enable TLS with `use_ssl: true` or give the key's PEM as `server_public_key`.
 
-   With `use_ssl: true`, the server's TLS certificate is verified: it must chain to a trusted root and name `host`. A server in Docker or on the same host has the self-signed certificate that MySQL and MariaDB generate, so set `verify_server_certificate: false` for it; the traffic is still encrypted.
+   With `use_ssl: true`, the server's TLS certificate is verified: it must chain to a trusted root and name `host`. A server in a container or on the same host has the self-signed certificate that MySQL and MariaDB generate, so set `verify_server_certificate: false` for it; the traffic is still encrypted.
 
 5. Run the migration to generate `migrations` and `greetings` tables in the database.
 
@@ -70,6 +70,8 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 
 ### Production
 
+Before deploying, check the `jwt_secret` in `config/default.yaml` and `config/production.yaml`: it signs the app's tokens. If it is still `INSECURE_DEFAULT_SECRET`, replace it with a random one (`angel3 key` generates new ones). `angel3 init` already does this for a new project. Keep the secrets out of public repositories, as anyone who knows one can sign tokens the app accepts.
+
 1. Run the following command:
 
     ```bash
@@ -85,14 +87,36 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
 
     Run either from the project directory, as the server reads `config/`, `views/` and `web/` from there; to deploy the executable, copy those directories with it. Set `ANGEL_ENV=production` to use the production configuration.
 
-2. Or run it with Docker. The `Dockerfile` builds the native executable, and runs it in a minimal image:
+2. Or run it with [Podman](https://podman.io/). The `Containerfile` builds the native executable, and runs it in a minimal image:
 
     ```bash
-    docker build -t starter_app .
-    docker run -p 3000:3000 starter_app
+    podman build -t starter_app .
+    podman run --rm -p 3000:3000 starter_app
     ```
 
-    Run the migrations with the same image, as `docker run --rm starter_app /app/bin/migrate up`. In a container, `localhost` is the container itself, so set the database `host` in `config/` to one the container can reach.
+    In a container, `localhost` is the container itself, so give the database's host with the `MYSQL_HOST` environment variable, or `host` in `config/`. For a database on the host machine, Podman names it `host.containers.internal`:
+
+    ```bash
+    podman run --rm -e MYSQL_HOST=host.containers.internal starter_app /app/bin/migrate up
+    podman run --rm -p 3000:3000 -e MYSQL_HOST=host.containers.internal starter_app
+    ```
+
+    The database must accept connections from the container, not only from `localhost`.
+
+3. Or run it with Podman Compose, together with a MariaDB database, which runs the migrations before starting the server:
+
+    ```bash
+    # Build the image, and start the database, the migrations and the server
+    podman-compose -f contrib/deployment/compose.yaml up --build -d
+
+    # Stop and remove the containers, keeping the database's data
+    podman-compose -f contrib/deployment/compose.yaml down
+
+    # ... and also delete the data
+    podman-compose -f contrib/deployment/compose.yaml down -v
+    ```
+
+    See [contrib/deployment/README.md](contrib/deployment/README.md).
 
 ### Building ORM Model
 

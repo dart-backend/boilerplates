@@ -14,21 +14,24 @@ AngelConfigurer configureServer(FileSystem fileSystem) {
     // Render `views/hello.jl` when a user visits the application root.
     app.get('/', (req, res) => res.render('hello'));
 
-    // Mount static server at web in development.
-    // The `CachingVirtualDirectory` variant of `VirtualDirectory` also sends `Cache-Control` headers.
+    // Serve the files of `web/`, such as stylesheets and images. In production,
+    // `CachingVirtualDirectory` also sends `Cache-Control` headers, so browsers
+    // reuse a file for an hour, and ETags, so they then only download it again
+    // if it changed.
     //
-    // In production, however, prefer serving static files through NGINX or a
-    // similar reverse proxy.
+    // At higher traffic, a reverse proxy such as NGINX can serve them instead.
     //
     // Read the following two sources for documentation:
-    if (!app.environment.isProduction) {
-      var vDir = VirtualDirectory(
-        app,
-        fileSystem,
-        source: fileSystem.directory('web'),
-      );
-      app.fallback(vDir.handleRequest);
-    }
+    // * https://medium.com/the-angel-framework/serving-static-files-with-the-angel-framework-2ddc7a2b84ae
+    // * https://pub.dev/packages/angel3_static
+    var vDir = CachingVirtualDirectory(
+      app,
+      fileSystem,
+      source: fileSystem.directory('web'),
+      maxAge: 3600,
+      onlyInProduction: true,
+    );
+    app.fallback(vDir.handleRequest);
 
     // Throw a 404 if no route matched the request.
     app.fallback((req, res) => throw AngelHttpException.notFound());

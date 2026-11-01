@@ -26,8 +26,9 @@ Future<void> configureServer(Angel app) async {
 }
 
 // MariaDB or MySQL connection, of the `mysql` section of the configuration.
-// The MYSQL_USERNAME and MYSQL_PASSWORD environment variables override its
-// `username` and `password`, so they need not be kept in a file.
+// The MYSQL_HOST, MYSQL_USERNAME and MYSQL_PASSWORD environment variables
+// override its `host`, `username` and `password`, as in a container, so they
+// need not be kept in a file.
 Future<MySQLConnection> connectToMySQL(Map configuration) async {
   var mysqlDbConfig = configuration['mysql'] as Map? ?? {};
 
@@ -57,7 +58,10 @@ Future<MySQLConnection> connectToMySQL(Map configuration) async {
   var connection = await MySQLConnection.createConnection(
     databaseName: databaseName,
     port: mysqlDbConfig['port'] as int? ?? 3306,
-    host: mysqlDbConfig['host'] as String? ?? 'localhost',
+    host:
+        Platform.environment['MYSQL_HOST'] ??
+        mysqlDbConfig['host'] as String? ??
+        'localhost',
     userName: userName,
     password:
         Platform.environment['MYSQL_PASSWORD'] ??
@@ -72,7 +76,7 @@ Future<MySQLConnection> connectToMySQL(Map configuration) async {
     allowPublicKeyRetrieval:
         mysqlDbConfig['allow_public_key_retrieval'] as bool? ?? false,
     // With TLS, the server's certificate must chain to a trusted root and name
-    // `host`. A server in Docker or on the same host has the self-signed one
+    // `host`. A server in a container or on the same host has the self-signed one
     // MySQL and MariaDB generate: set `verify_server_certificate: false` for
     // it. The traffic is still encrypted.
     verifyServerCertificate:
