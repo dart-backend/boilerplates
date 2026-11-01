@@ -12,6 +12,9 @@ mysql:
   # MySQL 8 logs in without TLS by fetching the server's public key. Set it to
   # false on an untrusted network, and set `use_ssl` or `server_public_key`.
   allow_public_key_retrieval: true
+  # With `use_ssl`, the server's certificate is verified. Set it to false for a
+  # server in Docker or on the same host, whose certificate is self-signed.
+  verify_server_certificate: true
 
 
  

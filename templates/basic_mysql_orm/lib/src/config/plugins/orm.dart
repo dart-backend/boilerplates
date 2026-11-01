@@ -48,7 +48,7 @@ Future<MySQLConnection> connectToMySQL(Map configuration) async {
     );
   }
 
-  // The timeout covers both opening the socket and logging in.
+  // The timeout covers opening the socket, the TLS handshake and logging in.
   var timeout = Duration(
     seconds: mysqlDbConfig['timeout_in_seconds'] as int? ?? 30,
   );
@@ -71,21 +71,21 @@ Future<MySQLConnection> connectToMySQL(Map configuration) async {
     serverPublicKey: mysqlDbConfig['server_public_key'] as String?,
     allowPublicKeyRetrieval:
         mysqlDbConfig['allow_public_key_retrieval'] as bool? ?? false,
-  ).timeout(timeout);
+    // With TLS, the server's certificate must chain to a trusted root and name
+    // `host`. A server in Docker or on the same host has the self-signed one
+    // MySQL and MariaDB generate: set `verify_server_certificate: false` for
+    // it. The traffic is still encrypted.
+    verifyServerCertificate:
+        mysqlDbConfig['verify_server_certificate'] as bool? ?? true,
+    socketTimeout: timeout,
+  );
 
-  try {
-    var remaining = timeout - stopwatch.elapsed;
-    await connection.connect(
-      timeoutMs: remaining.isNegative ? 0 : remaining.inMilliseconds,
-    );
-  } catch (_) {
-    // Close the connection if it failed after logging in, as when setting its
-    // character set; `mysql_dart` cannot close one that is still logging in.
-    try {
-      await connection.close();
-    } catch (_) {}
-    rethrow;
-  }
+  // The rest of the timeout covers the TLS handshake and logging in. A
+  // connection that fails or times out is closed by `mysql_dart`.
+  var remaining = timeout - stopwatch.elapsed;
+  await connection.connect(
+    timeoutMs: remaining.isNegative ? 0 : remaining.inMilliseconds,
+  );
 
   return connection;
 }
