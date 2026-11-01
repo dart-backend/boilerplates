@@ -1,0 +1,78 @@
+# Runs this application and its PostgreSQL database in containers with Podman.
+# From the project's root:
+#
+#   podman-compose -f contrib/deployment/compose.yaml up --build -d
+#
+# Then open http://localhost:3000. See README.md in this folder.
+name: angel3-app
+
+# The database's user and password, of `config/default.yaml`. Set them in the
+# environment, or in a `.env` file next to this one, to use others.
+x-database-env: &database-env
+  POSTGRES_USERNAME: ${DB_USERNAME:-appuser}
+  POSTGRES_PASSWORD: ${DB_PASSWORD:-App1970#}
+
+services:
+  db:
+    image: docker.io/library/postgres:17-alpine
+    environment:
+      POSTGRES_DB: appdb
+      POSTGRES_USER: ${DB_USERNAME:-appuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-App1970#}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  # Creates or updates the tables with `bin/migrate up`, then exits. It builds
+  # the image, which `app` runs too.
+  migrate:
+    # The project's Containerfile compiles native executables of the server and
+    # of `bin/migrate.dart`, and runs them in a `scratch` image.
+    build:
+      context: ../..
+      dockerfile: Containerfile
+    image: localhost/angel3-app:latest
+    command: ["/app/bin/migrate", "up"]
+    environment:
+      <<: *database-env
+      ANGEL_ENV: production
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+  app:
+    # The server, at ANGEL_ENV=production, of the image `migrate` builds. It
+    # serves the pages and the files of `web/`, which the image includes.
+    image: localhost/angel3-app:latest
+    environment:
+      <<: *database-env
+      ANGEL_ENV: production
+      POSTGRES_HOST: db
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      # Published on the host's loopback only; use "3000:3000" to expose it on
+      # every interface, or put a reverse proxy in front.
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    restart: unless-stopped
+    # The server only needs to listen and write logs.
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  db-data:

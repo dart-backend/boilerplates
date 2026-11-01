@@ -9,3 +9,4 @@ logs/
 test/
 build/
 pubspec.lock
+contrib/

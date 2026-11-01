@@ -1,0 +1,29 @@
+# Runs this application in a container with Podman. From the project's root:
+#
+#   podman-compose -f contrib/deployment/compose.yaml up --build -d
+#
+# Then open http://localhost:3000. See README.md in this folder.
+name: angel3-app
+
+services:
+  app:
+    # The project's Containerfile compiles a native executable and runs it in a
+    # `scratch` image, at ANGEL_ENV=production. The server serves the pages
+    # and the files of `web/`, which the image includes.
+    build:
+      context: ../..
+      dockerfile: Containerfile
+    image: localhost/angel3-app:latest
+    ports:
+      # Published on the host's loopback only; use "3000:3000" to expose it on
+      # every interface, or put a reverse proxy in front.
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    environment:
+      ANGEL_ENV: production
+    restart: unless-stopped
+    # The server only needs to listen and write logs.
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

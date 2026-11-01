@@ -15,7 +15,7 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
 
    The user owns the database, so it can create the tables of the migrations. Granting it privileges on the database is not enough: since PostgreSQL 15, only the owner of a database can create tables in its `public` schema.
 
-4. Update the `postgres` section in the `config/default.yaml` file with the newly created user and database name.
+4. Update the `postgres` section in the `config/default.yaml` file with the newly created user and database name. The `POSTGRES_HOST`, `POSTGRES_USERNAME` and `POSTGRES_PASSWORD` environment variables, if set, override its `host`, `username` and `password`.
 
    ```yaml
     postgres:
@@ -64,6 +64,8 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
 
 ### Production
 
+Before deploying, check the `jwt_secret` in `config/default.yaml` and `config/production.yaml`: it signs the app's tokens. If it is still `INSECURE_DEFAULT_SECRET`, replace it with a random one (`angel3 key` generates new ones). `angel3 init` already does this for a new project. Keep the secrets out of public repositories, as anyone who knows one can sign tokens the app accepts.
+
 1. Run the following command:
 
     ```bash
@@ -79,14 +81,36 @@ This is an [Angel3 framework](https://angel3-framework.web.app) starter applicat
 
     Run either from the project directory, as the server reads `config/`, `views/` and `web/` from there; to deploy the executable, copy those directories with it. Set `ANGEL_ENV=production` to use the production configuration.
 
-2. Or run it with Docker. The `Dockerfile` builds the native executable, and runs it in a minimal image:
+2. Or run it with [Podman](https://podman.io/). The `Containerfile` builds the native executable, and runs it in a minimal image:
 
     ```bash
-    docker build -t starter_app .
-    docker run -p 3000:3000 starter_app
+    podman build -t starter_app .
+    podman run --rm -p 3000:3000 starter_app
     ```
 
-    Run the migrations with the same image, as `docker run --rm starter_app /app/bin/migrate up`. In a container, `localhost` is the container itself, so set the database `host` in `config/` to one the container can reach.
+    In a container, `localhost` is the container itself, so give the database's host with the `POSTGRES_HOST` environment variable, or `host` in `config/`. For a database on the host machine, Podman names it `host.containers.internal`:
+
+    ```bash
+    podman run --rm -e POSTGRES_HOST=host.containers.internal starter_app /app/bin/migrate up
+    podman run --rm -p 3000:3000 -e POSTGRES_HOST=host.containers.internal starter_app
+    ```
+
+    The database must accept connections from the container, not only from `localhost`.
+
+3. Or run it with Podman Compose, together with a PostgreSQL database, which runs the migrations before starting the server:
+
+    ```bash
+    # Build the image, and start the database, the migrations and the server
+    podman-compose -f contrib/deployment/compose.yaml up --build -d
+
+    # Stop and remove the containers, keeping the database's data
+    podman-compose -f contrib/deployment/compose.yaml down
+
+    # ... and also delete the data
+    podman-compose -f contrib/deployment/compose.yaml down -v
+    ```
+
+    See [contrib/deployment/README.md](contrib/deployment/README.md).
 
 ## Resources
 

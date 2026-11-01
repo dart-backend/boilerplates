@@ -1,7 +1,8 @@
 # Builds a native executable of the server, then runs it in a minimal image.
+# Build and run it with Podman; see README.md.
 
 # Compile with the Dart SDK.
-FROM dart:stable AS build
+FROM docker.io/library/dart:stable AS build
 
 WORKDIR /app
 COPY pubspec.* ./
@@ -31,4 +32,4 @@ EXPOSE 3000
 CMD ["/app/bin/server", "-p", "3000", "-a", "0.0.0.0"]
 
 # Run the migrations with the image, as:
-# docker run --rm <image> /app/bin/migrate up
+# podman run --rm -e POSTGRES_HOST=host.containers.internal <image> /app/bin/migrate up

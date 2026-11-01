@@ -30,7 +30,7 @@ All templates share the same skeleton; the ORM and GraphQL ones add to it.
 - `lib/starter_app.dart`: `configureServer(Angel app)`, which configures `config`, `services` and `routes` in that order.
 - `lib/src/config/config.dart`: loads `config/*.yaml` (`angel3_configuration`) and Jael views, then `plugins/plugins.dart`.
 - `lib/src/config/plugins/orm.dart` (ORM/GraphQL): opens the DB connection from the `postgres:` or `mysql:` config section and registers a `QueryExecutor` singleton. On connection failure it logs and continues, so the server still starts without a database.
-- `lib/src/routes/routes.dart`: routes, static files (dev only), 404 and error pages. In the ORM templates, `executorOf(req)` returns the executor or throws a 503 when the DB is unavailable.
+- `lib/src/routes/routes.dart`: routes, static files of `web/` (with `Cache-Control` and ETags in production), 404 and error pages. In the ORM templates, `executorOf(req)` returns the executor or throws a 503 when the DB is unavailable.
 - `lib/src/routes/graphql/` (GraphQL): `graphql.dart` mounts `/graphql` and, outside production, `/graphiql`; `schema.dart` builds the schema; `todo.dart` holds the resolvers, which query the DB through the ORM.
 - `lib/src/models/` (ORM/GraphQL): `greeting.dart` (ORM templates) or `todo.dart` (GraphQL), with the committed generated `*.g.dart`. `lib/models.dart` re-exports them.
 - `bin/dev.dart`: hot-reloading dev server (`angel3_hot`, run with `dart --observe bin/dev.dart`), listening on `127.0.0.1:3000`.
@@ -39,7 +39,8 @@ All templates share the same skeleton; the ORM and GraphQL ones add to it.
 - `config/default.yaml`, `development.yaml`, `production.yaml`: `ANGEL_ENV` selects the environment. DB credentials are in `default.yaml`.
 - `views/*.jael`, `web/`: Jael templates and static assets.
 - `test/all_test.dart`: `angel3_test` tests that run without binding a port.
-- `Dockerfile`, `.dockerignore`: multi-stage build of a native executable into a `scratch` image.
+- `Containerfile`, `.containerignore`: multi-stage build of a native executable into a `scratch` image, built and run with Podman (`podman build`, `podman run`). The base image is fully qualified (`docker.io/library/dart:stable`), as Podman may refuse or prompt for short names.
+- `contrib/deployment/`: a Podman `compose.yaml` that builds the `Containerfile` from the project root (`context: ../..`), and its README. In the ORM and GraphQL templates it also runs the database (PostgreSQL, or MariaDB for MySQL) and a one-off `migrate` service (`bin/migrate up`) before `app`, and points them at the `db` service through the `*_HOST`/`*_USERNAME`/`*_PASSWORD` environment variables. It ships with the template, so keep it working when the `Containerfile`, port, config or migrations change. The Postgres-based `compose.yaml` files (`basic_postgres_orm`, `basic_graphql`) are identical.
 - `README.md`: per-template setup instructions for end users.
 
 ## Development Workflow
@@ -65,7 +66,7 @@ All templates share the same skeleton; the ORM and GraphQL ones add to it.
 
 ## Conventions
 
-- Keep changes consistent across templates. Shared files (`bin/dev.dart`, `bin/prod.dart`, `lib/src/config/config.dart`, `views/`, `web/`, `Dockerfile`, `analysis_options.yaml`) should stay identical, or differ only where a template needs it. The Postgres and MySQL ORM templates mirror each other and differ mainly in `orm.dart`, `migrate.dart`, `config/default.yaml` and dependencies.
+- Keep changes consistent across templates. Shared files (`bin/dev.dart`, `bin/prod.dart`, `lib/src/config/config.dart`, `views/`, `web/`, `Containerfile`, `.containerignore`, `analysis_options.yaml`) should stay identical, or differ only where a template needs it. The Postgres and MySQL ORM templates mirror each other and differ mainly in `orm.dart`, `migrate.dart`, `config/default.yaml` and dependencies.
 - Dependency constraints are aligned across templates (e.g. `build_runner: ^2.15.0`, `test: ^1.31.0`, `lints: ^6.0.0`). Bump them in all four templates together.
 - Angel3 major upgrades bump every `angel3_*` dependency and each template's README together, and usually need a matching angel3-cli release.
 - Comments in template code are written for end users learning Angel3: explain what and why, and link to the Angel3 docs where useful.
@@ -74,8 +75,8 @@ All templates share the same skeleton; the ORM and GraphQL ones add to it.
 ## Gotchas
 
 - **The package name must stay `starter_app`.** angel3-cli renames the project by reading the name from `pubspec.yaml`, then replacing `starter_app` in `pubspec.yaml`, `config/**/*.yaml`, `lib/starter_app.dart` and `package:starter_app/` imports. Files outside those patterns, or references written differently, aren't renamed.
-- **`jwt_secret` must stay a single `jwt_secret: ...` line** in `config/default.yaml` and `config/production.yaml`. `angel3 init` replaces it with a regex and appends a generated secret.
-- `config/default.yaml` contains sample DB credentials (`appuser` / `App1970#`). They're placeholders for local development, not secrets. The MySQL template also reads `MYSQL_USERNAME` and `MYSQL_PASSWORD` from the environment.
+- **`jwt_secret` must stay a single `jwt_secret: ...` line** in `config/default.yaml` and `config/production.yaml`. `angel3 init` deletes every line containing `jwt_secret:` (regex `jwt_secret:[^\n]+\n?`) and appends a generated secret at the end of the file. So the reminder comment above it must never contain `jwt_secret:` (with the colon), and must still read correctly once the secret has moved to the end.
+- `config/default.yaml` contains sample DB credentials (`appuser` / `App1970#`). They're placeholders for local development, not secrets. The ORM and GraphQL templates also read the database's host, user and password from the environment: `POSTGRES_HOST`, `POSTGRES_USERNAME`, `POSTGRES_PASSWORD`, or `MYSQL_HOST`, `MYSQL_USERNAME`, `MYSQL_PASSWORD`.
 - `pubspec.lock` is gitignored, so templates resolve to the latest compatible versions when users create a project. Test with a fresh `dart pub upgrade` before merging.
 - Generated `*.g.dart` files are committed, so a new project works without running `build_runner`. When a model changes, regenerate them, or `angel3 init` ships stale code.
 - `bin/prod.dart` runs without a reflector. Features that need one (controllers via `@Expose`, constructor injection, `ioc`, `@Hooks`/`@Middleware`) won't work unless a reflector is passed, as its comment explains. Don't add `dart:mirrors`-dependent code to templates.
