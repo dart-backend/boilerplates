@@ -118,7 +118,7 @@ Clients connected to `ws://localhost:3000/ws` are told of every change to the `g
 {"eventName": "api/greetings::created", "data": {"id": "<id>", "message": "Hello"}}
 ```
 
-The event names are `api/greetings::created`, `::updated` (for a `PATCH` too, as the changefeed does not tell the two apart) and `::removed`. Try it in a browser's console:
+The event names are `api/greetings::created`, `::modified`, `::updated` and `::removed`. A change made through the API is told with the name of its method (`::modified` for a `PATCH`), and one made outside it, as directly in the database, as `::created`, `::updated` or `::removed`, as the changefeed does not tell a modify from an update. Each change is told once. Try it in a browser's console:
 
 ```javascript
 const ws = new WebSocket('ws://localhost:3000/ws');

@@ -7,10 +7,11 @@ import 'package:angel3_websocket/server.dart';
 /// clients connected, and let them call the services.
 ///
 /// With the changefeed of `RethinkService`, a client is told of every change
-/// to the `greetings` table, as `api/greetings::created`, `::updated` or
-/// `::removed`, whoever made it: a REST request, a WebSocket client, another
-/// instance of the server, or a query in the database. A `PATCH` is told as
-/// `::updated` too, as the changefeed does not tell the two apart.
+/// to the `greetings` table, once, whoever made it: a REST request or a
+/// WebSocket client, as `api/greetings::created`, `::modified`, `::updated` or
+/// `::removed`, or another instance of the server or a query in the database,
+/// as `::created`, `::updated` or `::removed`, as the changefeed does not tell
+/// a modify from an update.
 ///
 /// Read more here:
 /// * https://pub.dev/packages/angel3_websocket

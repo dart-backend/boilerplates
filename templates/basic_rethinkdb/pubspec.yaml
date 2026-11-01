@@ -9,7 +9,7 @@ dependencies:
   angel3_configuration: ^10.0.0
   angel3_framework: ^10.0.0
   angel3_jael: ^10.0.0
-  angel3_rethinkdb: ^10.0.0
+  angel3_rethinkdb: ^10.0.1
   angel3_static: ^10.0.0
   angel3_websocket: ^10.0.0
   angel3_validate: ^10.0.0

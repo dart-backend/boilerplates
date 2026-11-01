@@ -30,20 +30,7 @@ Future configureServer(Angel app) async {
   if (app.container.has<Connection>()) {
     var r = app.container.make<RethinkDb>();
     var connection = app.container.make<Connection>();
-    var greetings = app.use(
-      '/api/greetings',
-      RethinkService(connection, r.table('greetings')),
-    );
-
-    // The changefeed fires the events of the changes the service makes too,
-    // so they are not broadcast by the service itself as well: otherwise a
-    // WebSocket client would be told of them twice (`config/plugins/websocket.dart`).
-    greetings.before([
-      HookedServiceEvent.created,
-      HookedServiceEvent.modified,
-      HookedServiceEvent.updated,
-      HookedServiceEvent.removed,
-    ], (e) => e.params['broadcast'] = false);
+    app.use('/api/greetings', RethinkService(connection, r.table('greetings')));
   } else {
     // The server could not connect to the database when it started (see
     // `config/plugins/rethinkdb.dart`).
