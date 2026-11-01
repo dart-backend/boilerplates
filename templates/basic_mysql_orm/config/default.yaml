@@ -9,6 +9,9 @@ mysql:
   username: appuser
   password: App1970#
   use_ssl: false
+  # MySQL 8 logs in without TLS by fetching the server's public key. Set it to
+  # false on an untrusted network, and set `use_ssl` or `server_public_key`.
+  allow_public_key_retrieval: true
 
 
  

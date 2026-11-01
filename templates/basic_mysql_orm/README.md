@@ -25,7 +25,11 @@ This is an ORM starter application for [Angel3 framework](https://angel3-framewo
         database_name: appdb
         username: appuser
         password: App1970#
+        use_ssl: false
+        allow_public_key_retrieval: true
    ```
+
+   `database_name` is required. On MySQL 8, a user logs in with `caching_sha2_password` by default, which, without TLS, needs the server's public key: `allow_public_key_retrieval: true` fetches it from the server. On an untrusted network, set it to `false`, and either enable TLS with `use_ssl: true` or give the key's PEM as `server_public_key`.
 
 5. Run the migration to generate `migrations` and `greetings` tables in the database.
 

@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:belatuk_pretty_logging/belatuk_pretty_logging.dart';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_hot/angel3_hot.dart';
-import 'package:belatuk_pretty_logging/belatuk_pretty_logging.dart';
 import 'package:logging/logging.dart';
 import 'package:starter_app/starter_app.dart';
 
