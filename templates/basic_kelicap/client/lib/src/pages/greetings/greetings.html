@@ -1,0 +1,19 @@
+<div class="greetings">
+  <h2>Greetings</h2>
+
+  <form (submit)="add(messageInput, $event)">
+    <input #messageInput placeholder="Say hello">
+    <button type="submit">Add</button>
+  </form>
+
+  <p *ngIf="error != null" class="error">{{ error }}</p>
+
+  <ul>
+    <li *ngFor="let greeting of greetings">
+      <span>{{ greeting.message }}</span>
+      <button (click)="remove(greeting)">Delete</button>
+    </li>
+  </ul>
+
+  <p *ngIf="greetings.isEmpty">No greetings yet.</p>
+</div>

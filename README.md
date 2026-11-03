@@ -13,6 +13,7 @@ This repository contains the starter application templates for [Angel3 framework
 | [`basic_mongo`](templates/basic_mongo) | MongoDB | MongoDB | The basic application, with a REST API of a MongoDB collection (`angel3_mongo`) |
 | [`basic_rethinkdb`](templates/basic_rethinkdb) | RethinkDB | RethinkDB | The basic application, with a REST and WebSocket API of a RethinkDB table, which pushes its changefeed to clients (`angel3_rethinkdb`, `angel3_websocket`) |
 | [`basic_sembast`](templates/basic_sembast) | Sembast | Sembast (embedded) | The basic application, with a REST API of a store in Sembast, a database in one file that needs no server (`angel3_sembast`) |
+| [`basic_kelicap`](templates/basic_kelicap) | Kelicap | none | A full-stack application: an Angel3 API with a [Kelicap](https://github.com/dukefirehawk/kelicap) web client, which calls it with `angel3_client` |
 
 Each template is a Dart package that runs on its own, and includes:
 
@@ -37,7 +38,7 @@ Each template is a Dart package that runs on its own, and includes:
 
     `angel3 init` downloads the templates from this repository's `master` branch, names the project `my_app`, generates its JWT secrets, and runs `dart pub get`.
 
-3. Follow the `README.md` of the new project, which is the template's: [basic](templates/basic/README.md), [ORM for PostgreSQL](templates/basic_postgres_orm/README.md), [ORM for MySQL/MariaDB](templates/basic_mysql_orm/README.md), [GraphQL](templates/basic_graphql/README.md), [MongoDB](templates/basic_mongo/README.md), [RethinkDB](templates/basic_rethinkdb/README.md) or [Sembast](templates/basic_sembast/README.md).
+3. Follow the `README.md` of the new project, which is the template's: [basic](templates/basic/README.md), [ORM for PostgreSQL](templates/basic_postgres_orm/README.md), [ORM for MySQL/MariaDB](templates/basic_mysql_orm/README.md), [GraphQL](templates/basic_graphql/README.md), [MongoDB](templates/basic_mongo/README.md), [RethinkDB](templates/basic_rethinkdb/README.md), [Sembast](templates/basic_sembast/README.md) or [Kelicap](templates/basic_kelicap/README.md).
 
 To try a template without the CLI, run it from its folder in a clone of this repository, as its README describes. For example, with Podman:
 

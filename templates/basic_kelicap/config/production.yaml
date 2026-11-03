@@ -1,0 +1,6 @@
+# Production-only server configuration
+debug: false
+# The JWT secret signs the app's tokens. If it is still INSECURE_DEFAULT_SECRET,
+# replace it with a random one before deploying (`angel3 key` generates new
+# ones), and keep it out of public repositories.
+jwt_secret: INSECURE_DEFAULT_SECRET

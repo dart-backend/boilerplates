@@ -1,0 +1,3 @@
+.dart_tool/
+# The client as `build_runner build` writes it.
+client/build/
