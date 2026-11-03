@@ -125,7 +125,9 @@ For live updates, as when another user adds a greeting, use the WebSocket client
 
 ## Forms in Kelicap
 
-The greetings page reads its input in Dart, with a template reference (`#messageInput`) given to `add(...)`, rather than with `[(ngModel)]`. `ngModel` of `kelicap_forms` reads `$event.target.value` dynamically, which a compiled app with `package:web` does not allow (`NoSuchMethodError: get$target`). Read form values in typed Dart code, as `add` does.
+The greetings page binds its input to the component's `message` field with `[(ngModel)]` of [`kelicap_forms`](https://pub.dev/packages/kelicap_forms), and adds the greeting on the form's `(ngSubmit)`, which keeps the page from reloading. `formDirectives` in the component's `directives` provides both.
+
+In code of your own that reads a DOM event, such as a `@HostListener`, take a typed `Event` and read the element in Dart, rather than reading `$event.target.value` in the template: that is dynamic, and fails in a release build (dart2js), although it works in development.
 
 ## Resources
 

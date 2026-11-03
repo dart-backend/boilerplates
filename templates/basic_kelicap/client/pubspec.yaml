@@ -7,8 +7,9 @@ resolution: workspace
 dependencies:
   angel3_client: ^10.0.1
   collection: ^1.17.0
-  kelicap: ^1.1.0
-  kelicap_router: ^1.1.0
+  kelicap: ^1.1.2
+  kelicap_forms: ^1.1.2
+  kelicap_router: ^1.1.2
   shared:
     path: ../shared
   web: ^1.1.0
