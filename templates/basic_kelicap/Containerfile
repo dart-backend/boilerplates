@@ -1,0 +1,36 @@
+# Builds the Kelicap client and a native executable of the server, then runs
+# the server, which serves the client, in a minimal image.
+# Build and run it with Podman; see README.md.
+
+# Compile with the Dart SDK.
+FROM docker.io/library/dart:stable AS build
+
+WORKDIR /app
+# The pubspecs of the workspace first, so that `dart pub get` is cached.
+COPY pubspec.* ./
+COPY shared/pubspec.* shared/
+COPY client/pubspec.* client/
+RUN dart pub get
+
+COPY . .
+RUN dart pub get --offline
+# The generated sources of shared/ are part of the project; to rebuild them
+# here instead:
+# RUN cd shared && dart run build_runner build --delete-conflicting-outputs
+RUN cd client && dart run build_runner build --release -o web:build
+RUN dart compile exe bin/prod.dart -o bin/server
+
+# Run with only what the server needs: the Dart runtime's libraries, the
+# executable, its configuration, and the built client.
+FROM scratch
+COPY --from=build /runtime/ /
+COPY --from=build /app/bin/server /app/bin/server
+COPY --from=build /app/config /app/config
+COPY --from=build /app/client/build /app/client/build
+
+WORKDIR /app
+ENV ANGEL_ENV=production
+EXPOSE 3000
+# One isolate by default, as the greetings are kept in memory (see bin/prod.dart);
+# use -j to set the number of isolates, as -j 4, once they are in a database.
+CMD ["/app/bin/server", "-p", "3000", "-a", "0.0.0.0"]

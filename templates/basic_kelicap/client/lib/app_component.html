@@ -1,0 +1,10 @@
+<h1>Starter Application</h1>
+
+<nav>
+  <a [routerLink]="routes.home.toUrl()">Home</a> |
+  <a [routerLink]="routes.greetings.toUrl()">Greetings</a>
+</nav>
+
+<div>
+  <router-outlet [routes]="routes.all"></router-outlet>
+</div>

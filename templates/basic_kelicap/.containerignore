@@ -1,0 +1,16 @@
+.dart_tool
+shared/.dart_tool
+client/.dart_tool
+client/build
+.idea
+.vscode
+.metals
+.git
+.github
+.packages
+logs/
+test/
+build/
+pubspec.lock
+pubspec_overrides.yaml
+contrib/
