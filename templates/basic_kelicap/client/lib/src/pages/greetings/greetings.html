@@ -1,8 +1,8 @@
 <div class="greetings">
   <h2>Greetings</h2>
 
-  <form (submit)="add(messageInput, $event)">
-    <input #messageInput placeholder="Say hello">
+  <form (ngSubmit)="add()">
+    <input [(ngModel)]="message" placeholder="Say hello">
     <button type="submit">Add</button>
   </form>
 

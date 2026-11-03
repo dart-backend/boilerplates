@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:angel3_configuration/angel3_configuration.dart';
+import 'package:file/local.dart';
 import 'package:logging/logging.dart';
 import 'package:belatuk_pretty_logging/belatuk_pretty_logging.dart';
 import 'package:angel3_framework/angel3_framework.dart';
@@ -7,9 +9,17 @@ import 'package:angel3_hot/angel3_hot.dart';
 import 'package:starter_app/starter_app.dart';
 
 void main() async {
-  // Watch the config/ and web/ directories for changes, and hot-reload the server.
   hierarchicalLoggingEnabled = true;
 
+  // The `host` and `port` of `config/`.
+  var config = Angel();
+  await config.configure(configuration(const LocalFileSystem()));
+  var host = config.configuration['host'] as String? ?? '127.0.0.1';
+  var port = config.configuration['port'] as int? ?? 3000;
+  await config.close();
+
+  // Watch the config/ and lib/ directories for changes, and hot-reload the
+  // server.
   var hot = HotReloader(() async {
     var logger = Logger.detached('Starter App')
       ..level = Level.ALL
@@ -19,7 +29,7 @@ void main() async {
     return app;
   }, [Directory('config'), Directory('lib')]);
 
-  var server = await hot.startServer('127.0.0.1', 3000);
+  var server = await hot.startServer(host, port);
   print(
     '[Starter App] server listening at http://${server.address.address}:${server.port}',
   );

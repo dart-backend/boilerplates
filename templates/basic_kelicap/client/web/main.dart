@@ -1,6 +1,6 @@
-import 'package:angel3_client/angel3_client.dart';
 import 'package:angel3_client/browser.dart';
 import 'package:client/app_component.template.dart' as ng;
+import 'package:client/src/services/greeting_service.dart';
 import 'package:kelicap/kelicap.dart';
 import 'package:kelicap_router/kelicap_router.dart';
 import 'package:web/web.dart';
@@ -15,6 +15,9 @@ Angel angelClient() => Rest(window.location.origin);
   // `#/greetings`, so that reloading a page needs nothing of the server.
   routerProvidersHash,
   FactoryProvider(Angel, angelClient),
+  // One for the app, rather than one for each visit of the greetings page,
+  // each of which would add a service to `Rest`, and listeners to it.
+  ClassProvider(GreetingService),
   testabilityProvider,
 ])
 final InjectorFactory rootInjector = self.rootInjector$Injector;

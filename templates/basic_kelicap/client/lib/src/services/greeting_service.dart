@@ -6,7 +6,9 @@ import 'package:kelicap/di.dart';
 import 'package:shared/shared.dart';
 
 /// The greetings of the server's `/api/greetings` service, as `Greeting`s of
-/// `shared/`, through `angel3_client`'s typed service.
+/// `shared/`, through `angel3_client`'s typed service. The app has one, of its
+/// root injector in `web/main.dart`, so its [greetings] are kept between
+/// visits of the greetings page.
 @Injectable()
 class GreetingService {
   final Service<String, Greeting> _greetings;
