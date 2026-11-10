@@ -33,4 +33,6 @@ ENV ANGEL_ENV=production
 EXPOSE 3000
 # One isolate by default, as the greetings are kept in memory (see bin/prod.dart);
 # use -j to set the number of isolates, as -j 4, once they are in a database.
+# -p and -a override the host and port of config/: the server listens on
+# every interface of the container, on the port EXPOSEd above.
 CMD ["/app/bin/server", "-p", "3000", "-a", "0.0.0.0"]

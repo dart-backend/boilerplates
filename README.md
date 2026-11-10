@@ -17,7 +17,7 @@ This repository contains the starter application templates for [Angel3 framework
 
 Each template is a Dart package that runs on its own, and includes:
 
-* a hot-reloading development server (`bin/dev.dart`) and a production server (`bin/prod.dart`) that compiles with `dart compile exe`
+* a hot-reloading development server (`bin/dev.dart`) and a production server (`bin/prod.dart`) that compiles with `dart compile exe`. Both listen on the `host` and `port` of `config/default.yaml` (`127.0.0.1:3000`), which can be read from the environment, as `port: $PORT`; the production server's `-a` and `-p` override them
 * a `Containerfile`, to build and run the server with [Podman](https://podman.io/)
 * a Podman Compose file in `contrib/deployment`, which also runs the database in the ORM, GraphQL, MongoDB and RethinkDB templates, and the migrations in the ORM, GraphQL and RethinkDB ones
 * tests that run without a database

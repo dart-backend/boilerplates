@@ -33,4 +33,6 @@ ENV SEMBAST_PATH=/app/data/app.db
 VOLUME /app/data
 EXPOSE 3000
 # One isolate, as only one may open the Sembast database (see bin/prod.dart).
+# -p and -a override the host and port of config/: the server listens on
+# every interface of the container, on the port EXPOSEd above.
 CMD ["/app/bin/server", "-p", "3000", "-a", "0.0.0.0"]
