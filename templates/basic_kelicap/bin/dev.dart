@@ -14,8 +14,10 @@ void main() async {
   // The `host` and `port` of `config/`.
   var config = Angel();
   await config.configure(configuration(const LocalFileSystem()));
-  var host = config.configuration['host'] as String? ?? '127.0.0.1';
-  var port = config.configuration['port'] as int? ?? 3000;
+  // Either can be a String, such as one of an environment variable
+  // (`port: $PORT`), or one quoted in YAML.
+  var host = config.configuration['host']?.toString() ?? '127.0.0.1';
+  var port = int.tryParse('${config.configuration['port']}') ?? 3000;
   await config.close();
 
   // Watch the config/ and lib/ directories for changes, and hot-reload the

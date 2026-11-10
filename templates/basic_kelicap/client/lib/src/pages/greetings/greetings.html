@@ -3,7 +3,7 @@
 
   <form (ngSubmit)="add()">
     <input [(ngModel)]="message" placeholder="Say hello">
-    <button type="submit">Add</button>
+    <button type="submit" [disabled]="adding">Add</button>
   </form>
 
   <p *ngIf="error != null" class="error">{{ error }}</p>
