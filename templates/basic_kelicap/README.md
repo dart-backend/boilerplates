@@ -135,4 +135,4 @@ Visit the [Developer Guide](https://angel3-docs.dukefirehawk.com/guides) for doz
 
 Examples and complete projects can be found on the [website](https://angel3-framework.web.app/#/examples).
 
-You can also view the [API Documentation](https://pub.dev/documentation/angel3_framework/latest/), the [`angel3_client` documentation](https://pub.dev/packages/angel3_client) and the [Kelicap documentation](https://github.com/dukefirehawk/kelicap-docs).
+You can also view the [API Documentation](https://pub.dev/documentation/angel3_framework/latest/), the [`angel3_client` documentation](https://pub.dev/packages/angel3_client) and the [Kelicap documentation](https://dukefirehawk.gitbook.io/kelicap-docs).

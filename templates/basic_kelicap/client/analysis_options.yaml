@@ -1,1 +1,7 @@
 include: package:lints/recommended.yaml
+
+analyzer:
+  exclude:
+    - "**/dist/**"
+  errors:
+     uri_has_not_been_generated: ignore

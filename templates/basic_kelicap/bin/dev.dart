@@ -1,22 +1,26 @@
 import 'dart:io';
 
 import 'package:angel3_configuration/angel3_configuration.dart';
-import 'package:file/local.dart';
-import 'package:logging/logging.dart';
-import 'package:belatuk_pretty_logging/belatuk_pretty_logging.dart';
 import 'package:angel3_framework/angel3_framework.dart';
 import 'package:angel3_hot/angel3_hot.dart';
+import 'package:belatuk_pretty_logging/belatuk_pretty_logging.dart';
+import 'package:file/local.dart';
+import 'package:logging/logging.dart';
 import 'package:starter_app/starter_app.dart';
 
 void main() async {
   hierarchicalLoggingEnabled = true;
 
-  // The `host` and `port` of `config/`.
-  var config = Angel();
-  await config.configure(configuration(const LocalFileSystem()));
-  var host = config.configuration['host'] as String? ?? '127.0.0.1';
-  var port = config.configuration['port'] as int? ?? 3000;
-  await config.close();
+  // Listen on the `host` and `port` of `config/`. Either can be a String, such
+  // as one of an environment variable (`port: $PORT`). They are read once: a
+  // change to `config/` reloads the server, which keeps listening on them
+  // until it is restarted.
+  var config = await loadStandaloneConfiguration(
+    const LocalFileSystem(),
+    onWarning: stderr.writeln,
+  );
+  var host = config['host']?.toString() ?? '127.0.0.1';
+  var port = int.tryParse('${config['port']}') ?? 3000;
 
   // Watch the config/ and lib/ directories for changes, and hot-reload the
   // server.
